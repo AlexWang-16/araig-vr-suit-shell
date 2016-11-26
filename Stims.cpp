@@ -25,7 +25,6 @@ namespace ARAIG {
     else if (destination == "traps") {
       target = TRAPS;
     }
-    
     return target;
   }
   
@@ -52,9 +51,14 @@ namespace ARAIG {
     return location;
   }
   
-  Stims::Stims(std::string name, std::string location, ushort intensity, size_t frequency, size_t duration): Stimulation(name, intensity, duration), frequency_(frequency){
+  Stims::Stims(std::string name, std::string location, sint intensity, sint frequency, int duration): Stimulation(name, intensity, duration){
+      stimLocation_ = stringToLocation(location);
     
-    stimLocation_ = stringToLocation(location);
+    if (frequency >= 0 && frequency <= max_frequency){
+      frequency_ = frequency;
+    }else if (frequency > max_frequency){
+      frequency_= max_frequency;
+    }
   }
   
   std::ostream& Stims::display(std::ostream& os)const{
@@ -71,5 +75,9 @@ namespace ARAIG {
     os << ' ' << "Duration = " << duration_;
     os.flush();
     return os;
+  }
+  
+  Stimulation* Stims::clone(){
+    return new Stims(*this);
   }
 }

@@ -12,12 +12,30 @@
 #include <iostream>
 #include "Stimulation.h"
 namespace ARAIG {
-  Stimulation::Stimulation (std::string name, ushort intensity, size_t duration): stimName_(name), duration_(duration){
-    if (intensity <= 100){
-      //Since intensity_ is unsigned short, it cannot be less than 0
-      intensity_ = intensity;
-    } else {
-      intensity_ = 100;
+  Stimulation::Stimulation (std::string name, sint intensity, int duration): stimName_(name){
+    
+    try{
+      if (!name.length()){
+        Exceptions e ("Error: Empty Stimulation name detected. File may be corrupted. \nPlease ensure data conforms to format: exoskeleton <simulation name> intensity, duration.");
+        throw e;
+      }
+    } catch (Exceptions& e){
+      std::cerr << e.what() << '\n';
+      std::cerr.flush();
+      exit(1);
     }
+    
+    if (intensity > 0 && intensity <= max_intensity){
+      intensity_ = intensity;
+    }else if (intensity > max_intensity) {
+      intensity_ = max_intensity;
+    }
+    
+    if (duration > 0 && duration <= max_duration ) {
+    duration_ = duration;
+    } else if (duration > max_duration)
+      duration_ = max_duration;
   };
 }
+
+

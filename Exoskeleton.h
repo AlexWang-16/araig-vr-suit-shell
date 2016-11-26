@@ -19,8 +19,9 @@ namespace ARAIG {
     std::string stimType_ = "exoskeleton";
   public:
     Exoskeleton() = delete;
-    Exoskeleton(std::string, ushort, size_t);
+    Exoskeleton(std::string, sint, int);
     //~Exoskeleton(); not sure if I need this yet
+    virtual Stimulation* clone();
     std::ostream& display(std::ostream& os)const;
   };
 }
