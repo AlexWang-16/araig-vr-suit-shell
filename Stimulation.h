@@ -12,6 +12,7 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include <iterator>
 #include "Exceptions.h"
 typedef short sint;
 namespace ARAIG {
@@ -24,10 +25,11 @@ namespace ARAIG {
     sint intensity_ = 0;
     sint duration_ = 0;
   public:
-    virtual std::ostream& display(std::ostream&)const = 0;
-    virtual Stimulation* clone() = 0;
-    Stimulation (std::string, sint, int);
     Stimulation()=delete;
+    Stimulation (std::string, sint, int);
+    virtual Stimulation* clone() = 0;
+    virtual std::string getName()const;
+    virtual std::ostream& display(std::ostream& os)const = 0;
   };
 }
 const int max_duration = ARAIG::duration_max;

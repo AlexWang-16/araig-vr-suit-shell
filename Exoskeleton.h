@@ -12,18 +12,18 @@
 #ifndef Exoskeleton_H
 #define Exoskeleton_H
 
-#include <iostream>
 #include "Stimulation.h"
 namespace ARAIG {
   class Exoskeleton : public Stimulation{
     std::string stimType_ = "exoskeleton";
   public:
     Exoskeleton() = delete;
-    Exoskeleton(std::string, sint, int);
+    Exoskeleton(std::string name, sint intensity, int duration);
     //~Exoskeleton(); not sure if I need this yet
     virtual Stimulation* clone();
     std::ostream& display(std::ostream& os)const;
   };
+  std::ostream& operator<<(std::ostream os, Exoskeleton& exo_skeleton);
 }
 
 #endif /* Exoskeleton_H */

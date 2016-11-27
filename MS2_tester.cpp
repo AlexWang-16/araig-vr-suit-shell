@@ -53,11 +53,19 @@ int main(int argc, const char * argv[]) {
   
   //Test: Print the 2nd element from Echo using overloaded [] operator
   //Expected: Stims 2 data
-  echo[1]->display(std::cout);
+  echo[1]->display(std::cout) << "\n\n";
   
   
   //Test: Copy Task 5 using "=" operator
   //Expected: Information printed should be the same as Task 5 (see above)
   
-  
+  //Test: Removing the 3rd Stimulation from Echo (Exoskeleton element)
+  //Expected: 2 Stims remain when execute() is executed
+  std::cout << "Deleting Exo1\n";
+  std::cout.width(30);
+  std::cout.fill('-');
+  std::cout << '-' << '\n';
+  std::cout.fill (' ');
+  echo.removeStim("Exo1");
+  echo.execute(std::cout);
 }

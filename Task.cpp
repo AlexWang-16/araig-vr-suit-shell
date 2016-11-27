@@ -17,7 +17,6 @@ namespace ARAIG{
     task_num_ = global_task_num;
     name_ = name_ + std::to_string(task_num_);
     global_task_num++;
-    
   }
   
   Task::Task(std::string name){
@@ -43,27 +42,34 @@ namespace ARAIG{
   void Task::copy (std::string name, int task_num, std::list<Stimulation*>tsk_list){
       name_ = name;
       task_num_ = task_num;
-      auto i = task_list_.begin();
       for (Stimulation* element : tsk_list){
-        task_list_.insert(i, element);
-        i++;
+        task_list_.push_back(element);
       }
   }
   
-  void Task::operator+=(const Stimulation* src){
-    //TODO: += overloaded operator
-    
-
+  void Task::operator+=(Stimulation* ptr){
+    task_list_.push_back(ptr);
   }
   
   Stimulation* Task::operator[](unsigned int i)const{
-    //Go to the specific element and return (*iterator)
-    return 0;
+    //Go to the specific index and return  Stimulation*
+    auto it = task_list_.begin();
+    if (i < task_list_.size()){
+      std::advance(it, i);
+    }
+    return *it;
   }
   
   void Task::removeStim(std::string name){
-    //TODO: Search task_list_ for item and delete
-    //task_list_.erase(i)
+    //Search task_list_ for item and delete
+    auto i = task_list_.begin();
+    while (i != task_list_.end()){
+      if ((*i)->getName() == name){
+        task_list_.erase(i);
+        break;
+      }
+      i++;
+    }
   }
   
   std::ostream& Task::dump(std::ostream& os)const{
@@ -76,7 +82,7 @@ namespace ARAIG{
     //Print details of all stimulations inside a task. Will require iterator
 
     for (Stimulation* element : task_list_){
-      os << element << '\n';
+      element->display(os) << '\n';
     }
     return os;
   }

@@ -12,7 +12,6 @@
 #ifndef Stims_H
 #define Stims_H
 
-#include <iostream>
 #include "Stimulation.h"
 namespace ARAIG {
   class Stims : public Stimulation {
@@ -26,7 +25,7 @@ namespace ARAIG {
     const std::string locationToString(location)const;
   public:
     Stims() = delete;
-    Stims (std::string, std::string, sint, sint, int);
+    Stims (std::string name, std::string location, sint intensity, sint frequency, int duration);
     //~Stims(); not sure if I need this yet
     virtual Stimulation* clone();
     std::ostream& display(std::ostream& os)const;

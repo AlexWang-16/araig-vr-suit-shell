@@ -35,7 +35,11 @@ namespace ARAIG {
     duration_ = duration;
     } else if (duration > max_duration)
       duration_ = max_duration;
-  };
+  }
+  
+  std::string Stimulation::getName()const{
+    return stimName_;
+  }
 }
 
 
