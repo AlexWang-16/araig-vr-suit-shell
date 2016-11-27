@@ -30,7 +30,6 @@ namespace ARAIG {
   }
   
   std::ostream& operator<<(std::ostream& os, Exoskeleton& exo_skeleton){
-    //TODO: Fix this.
     exo_skeleton.display(os);
     return os;
   }

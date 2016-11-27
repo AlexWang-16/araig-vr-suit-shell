@@ -21,18 +21,21 @@ namespace ARAIG{
     int task_num_ = 0;
   public:
     Task();
-    Task (std::string);
-    Task (const Task&);
-    Task (Task&&);
-    Task& operator=(const Task&);
-    void copy(std::string, int, std::list<Stimulation*>);
-    void operator+=(Stimulation*);
-    Stimulation* operator[] (unsigned int)const;
-    void removeStim(std::string);
+    Task (std::string name);
+    Task (const Task& src);
+    Task (Task&& src);
+    virtual ~Task();
+    Task& operator=(const Task& src);
+    Task& operator=(Task&& src);
+    void copy(std::string name, int task_num, std::list<Stimulation*>task_list);
+    void move(std::string& name, int& task_num, std::list<Stimulation*>&task_list);
+    void operator+=(Stimulation* ptr);
+    Stimulation* operator[] (unsigned int i)const;
+    void removeStim(std::string name);
     // Print the list of tasks in there
-    std::ostream& dump(std::ostream&)const;
+    std::ostream& dump(std::ostream& os)const;
     //Print the simulations inside a task
-    std::ostream& execute(std::ostream&)const;
+    std::ostream& execute(std::ostream& os)const;
   };
 }
 #endif /* Task_H */

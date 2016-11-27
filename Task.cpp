@@ -32,9 +32,26 @@ namespace ARAIG{
     copy(src.name_, src.task_num_, src.task_list_);
   }
   
+  Task::Task (Task&& src){
+    //Move constructor
+    move(src.name_, src.task_num_, src.task_list_);
+  }
+  
+  Task::~Task() {
+    name_.clear();
+    task_list_.clear();
+  }
+  
   Task& Task::operator=(const Task& src){
     if (&src != this){
       copy(src.name_, src.task_num_, src.task_list_);
+    }
+    return *this;
+  }
+  
+  Task& Task::operator=(Task&& src){
+    if (this != &src){
+      move(src.name_, src.task_num_, src.task_list_);
     }
     return *this;
   }
@@ -45,6 +62,18 @@ namespace ARAIG{
       for (Stimulation* element : tsk_list){
         task_list_.push_back(element);
       }
+  }
+  
+  void Task::move (std::string& name, int& task_num, std::list<Stimulation*>& task_list){
+    name_ = name;
+    task_num_ = task_num;
+    task_list_.clear();
+    for (auto i = task_list.begin(); i !=task_list.end(); i++){
+      task_list_.push_back(*i);
+    }
+    //House Cleaning
+    task_list.clear();
+    name.clear();
   }
   
   void Task::operator+=(Stimulation* ptr){

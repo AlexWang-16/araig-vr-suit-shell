@@ -39,7 +39,7 @@ int main(int argc, const char * argv[]) {
   
   //Test: Creating a generic task and add 3 stimulations to the Task, then print out task information and details of each stimulation
   //Expected: It should print "Task 5 Task_5" followed by the stimulation information
-  //TODO
+  
   Stims s1("Stim1", "back", 50, 50, 50);
   Stims s2("Stims2", "front", 60, 60, 60);
   Exoskeleton ex1 ("Exo1", 50, 100);
@@ -58,6 +58,10 @@ int main(int argc, const char * argv[]) {
   
   //Test: Copy Task 5 using "=" operator
   //Expected: Information printed should be the same as Task 5 (see above)
+  Task foxtrot = echo;
+  foxtrot.dump(std::cout);
+  foxtrot.execute(std::cout);
+  std::cout <<'\n';
   
   //Test: Removing the 3rd Stimulation from Echo (Exoskeleton element)
   //Expected: 2 Stims remain when execute() is executed
