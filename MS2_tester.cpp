@@ -16,9 +16,9 @@ using namespace ARAIG;
 extern const int max_duration;
 extern const sint max_intensity;
 
-const void print_dash() {
+const void print_dash(int x = 30) {
   //Creates underline for titles
-  std::cout.width(30);
+  std::cout.width(x);
   std::cout.fill('-');
   std::cout << '-' << '\n';
   std::cout.fill (' ');
@@ -36,21 +36,24 @@ int main(int argc, const char * argv[]) {
   //Expected: Task# should be 1 and name should be should be "Task_1"
   Task alpha;
   alpha.dump(std::cout);
+  new_line();
   
   //Test: Instanting a second empty class and attempting to print its data and list of empty stimulations
   //Expected: Task# should be 2, Task name should be "Task_2" and no stimulation should show
   Task beta;
   beta.dump(std::cout);
+  new_line();
   
   //Test: Giving task a name "Charlie" and an empty list of stimulations and printing task information
   //Expected: "Task 3 Task Test"
   Task charlie ("Charlie");
   charlie.dump(std::cout);
-  
+  new_line();
   //Test: Providing an empty name and an empty list of stimulations and printing task information
   //Expected: Task 4 Task_4
   Task delta ("");
   delta.dump(std::cout);
+  new_line();
   
   //Test: Creating a generic task and add 3 stimulations to the Task, then print out task information and details of each stimulation
   //Expected: It should print "Task 5 Task_5" followed by the stimulation information
@@ -64,24 +67,30 @@ int main(int argc, const char * argv[]) {
   echo += ex1.clone();
   echo.dump(std::cout);
   echo.execute(std::cout);
-  new_line(2);
+  new_line();
   
   //Test: Print the 2nd element from Echo using overloaded [] operator
   //Expected: Stims 2 data
+  std::cout << "Element 2 of Task Echo\n";
+  print_dash();
   echo[1]->display(std::cout);
   new_line(2);
   
   
   //Test: Copy Task 5 using "=" operator
   //Expected: Information printed should be the same as Task 5 (see above)
+  std::cout << "Testing use of copy assignment operator\n";
+  print_dash(40);
   Task foxtrot = echo;
   foxtrot.dump(std::cout);
   foxtrot.execute(std::cout);
-  new_line();
+  new_line(2);
   
   //Test: Calling Copy constructor directly
   //Expected: A copy of Task 5 will be created
   Task golf (echo);
+  std::cout << "Direct copy constructor call\n";
+  print_dash();
   golf.dump(std::cout);
   golf.execute(std::cout);
   new_line();
@@ -89,8 +98,9 @@ int main(int argc, const char * argv[]) {
   //Test: Removing the 3rd Stimulation from Echo (Exoskeleton element)
   //Expected: 2 Stims remain when execute() is executed
   std::cout << "Deleting Exo1 from Task 5 (echo)\n";
-  print_dash();
+  print_dash(33);
   echo.removeStim("Exo1");
+  echo.dump(std::cout);
   echo.execute(std::cout);
   new_line(2);
   
@@ -99,12 +109,12 @@ int main(int argc, const char * argv[]) {
   Task hotel;
   hotel = std::move(foxtrot);
   std::cout << "Hotel's data\n";
-  print_dash();
+  print_dash(12);
   hotel.dump(std::cout);
   hotel.execute(std::cout);
   new_line(2);
   std::cout << "Updated Foxtrot's data\n";
-  print_dash();
+  print_dash(22);
   foxtrot.dump(std::cout);
   foxtrot.execute(std::cout);
   
@@ -114,6 +124,5 @@ int main(int argc, const char * argv[]) {
   
   //Task india;
   //india (Task (golf));
-
 
 }

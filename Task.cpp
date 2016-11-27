@@ -86,6 +86,7 @@ namespace ARAIG{
   
   void Task::operator+=(Stimulation* ptr){
     task_list_.push_back(ptr);
+    task_num_++;
   }
   
   Stimulation* Task::operator[](unsigned int i)const{
@@ -97,12 +98,17 @@ namespace ARAIG{
     return *it;
   }
   
+  long Task::getSize()const{
+    return task_list_.size();
+  }
+  
   void Task::removeStim(std::string name){
     //Search task_list_ for item and delete
     auto i = task_list_.begin();
     while (i != task_list_.end()){
       if ((*i)->getName() == name){
         task_list_.erase(i);
+        task_num_--;
         break;
       }
       i++;
@@ -111,6 +117,7 @@ namespace ARAIG{
   
   std::ostream& Task::dump(std::ostream& os)const{
     os << task_id_ << ' ' << name_ << '\n';
+    os << "Number of stimulations in task list: " << getSize() <<'\n';
     os.flush();
     return os;
   }

@@ -32,6 +32,7 @@ namespace ARAIG{
     void move(std::string& task_id, std::string& name, int& task_num, std::list<Stimulation*>&task_list);
     void operator+=(Stimulation* ptr);
     Stimulation* operator[] (unsigned int i)const;
+    long getSize()const;
     void removeStim(std::string name);
     // Print the list of tasks in there
     std::ostream& dump(std::ostream& os)const;
