@@ -17,6 +17,7 @@ namespace ARAIG{
   class Task{
     static int global_task_num;
     std::list<Stimulation*>task_list_;
+    std::string task_id_ = "Task ";
     std::string name_ = "Task_";
     int task_num_ = 0;
   public:
@@ -27,8 +28,8 @@ namespace ARAIG{
     virtual ~Task();
     Task& operator=(const Task& src);
     Task& operator=(Task&& src);
-    void copy(std::string name, int task_num, std::list<Stimulation*>task_list);
-    void move(std::string& name, int& task_num, std::list<Stimulation*>&task_list);
+    void copy(std::string task_id, std::string name, int task_num, std::list<Stimulation*>task_list);
+    void move(std::string& task_id, std::string& name, int& task_num, std::list<Stimulation*>&task_list);
     void operator+=(Stimulation* ptr);
     Stimulation* operator[] (unsigned int i)const;
     void removeStim(std::string name);

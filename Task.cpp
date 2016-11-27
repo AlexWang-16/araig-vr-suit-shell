@@ -15,6 +15,7 @@ namespace ARAIG{
   
   Task::Task(){
     task_num_ = global_task_num;
+    task_id_ = task_id_ + std::to_string(task_num_);
     name_ = name_ + std::to_string(task_num_);
     global_task_num++;
   }
@@ -22,6 +23,7 @@ namespace ARAIG{
   Task::Task(std::string name){
     task_num_ = global_task_num;
     name_ = name_ + std::to_string(task_num_);
+    task_id_ = task_id_ + std::to_string(task_num_);
     if (name.length() > 0){
       name_ = name;
     }
@@ -29,34 +31,37 @@ namespace ARAIG{
   }
   
   Task::Task (const Task& src){
-    copy(src.name_, src.task_num_, src.task_list_);
+    copy(src.task_id_, src.name_, src.task_num_, src.task_list_);
   }
   
   Task::Task (Task&& src){
     //Move constructor
-    move(src.name_, src.task_num_, src.task_list_);
+    move(src.task_id_, src.name_, src.task_num_, src.task_list_);
   }
   
   Task::~Task() {
+    task_id_.clear();
     name_.clear();
     task_list_.clear();
+    task_num_ = 0;
   }
   
   Task& Task::operator=(const Task& src){
     if (&src != this){
-      copy(src.name_, src.task_num_, src.task_list_);
+      copy(src.task_id_, src.name_, src.task_num_, src.task_list_);
     }
     return *this;
   }
   
   Task& Task::operator=(Task&& src){
     if (this != &src){
-      move(src.name_, src.task_num_, src.task_list_);
+      move(src.task_id_, src.name_, src.task_num_, src.task_list_);
     }
     return *this;
   }
   
-  void Task::copy (std::string name, int task_num, std::list<Stimulation*>tsk_list){
+  void Task::copy (std::string task_id, std::string name, int task_num, std::list<Stimulation*>tsk_list){
+      task_id_ = task_id;
       name_ = name;
       task_num_ = task_num;
       for (Stimulation* element : tsk_list){
@@ -64,7 +69,8 @@ namespace ARAIG{
       }
   }
   
-  void Task::move (std::string& name, int& task_num, std::list<Stimulation*>& task_list){
+  void Task::move (std::string& task_id, std::string& name, int& task_num, std::list<Stimulation*>& task_list){
+    task_id_ = task_id;
     name_ = name;
     task_num_ = task_num;
     task_list_.clear();
@@ -72,8 +78,10 @@ namespace ARAIG{
       task_list_.push_back(*i);
     }
     //House Cleaning
-    task_list.clear();
+    task_id.clear();
     name.clear();
+    task_num = 0;
+    task_list.clear();
   }
   
   void Task::operator+=(Stimulation* ptr){
@@ -102,7 +110,7 @@ namespace ARAIG{
   }
   
   std::ostream& Task::dump(std::ostream& os)const{
-    os << "Task " << task_num_ << ' ' << name_ << '\n';
+    os << task_id_ << ' ' << name_ << '\n';
     os.flush();
     return os;
   }
