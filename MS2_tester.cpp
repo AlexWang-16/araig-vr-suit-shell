@@ -60,8 +60,8 @@ int main(int argc, const char * argv[]) {
   delta.dump(std::cout);
   new_line();
   
-  //Test: Creating a generic task and add 3 stimulations to the Task, then print out task information and details of each stimulation
-  //Expected: It should print "Task 5 Task_5" followed by the stimulation information
+  //Test: Creating a stim_list vector that holds a list of stimulations read from a file
+  //Expected: A vector called stim_list should be created with 32 stimulations inside
   std::ifstream file ("StimulationConfig.csv");
   try {
     if(!file){
