@@ -18,16 +18,15 @@ namespace ARAIG {
     enum location {NONE = 0, ABS, FRONT, BACK, TRAPS};
     std::string stimType_ = "stim";
     location stimLocation_;
-    sint frequency_ = 0;
+    int frequency_ = 0;
     
     //private member functions
     location stringToLocation(std::string);
     const std::string locationToString(location)const;
   public:
     Stims() = delete;
-    Stims (std::string name, std::string location, sint intensity, sint frequency, int duration);
+    Stims (std::string name, std::string location, int intensity, int frequency, int duration);
     //~Stims(); not sure if I need this yet
-    virtual Stimulation* clone();
     std::ostream& display(std::ostream& os)const;
     
   };

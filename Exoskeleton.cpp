@@ -11,7 +11,7 @@
 
 #include "Exoskeleton.h"
 namespace ARAIG {
-  Exoskeleton::Exoskeleton(std::string name, sint intensity, int duration) : Stimulation(name, intensity, duration){}
+  Exoskeleton::Exoskeleton(std::string name, int intensity, int duration) : Stimulation(name, intensity, duration){}
   
   std::ostream& Exoskeleton::display(std::ostream& os)const{
     os << stimName_ << '\n';
@@ -23,10 +23,6 @@ namespace ARAIG {
     os << ' ' << "Duration = " << duration_;
     os.flush();
     return os;
-  }
-  
-  Stimulation* Exoskeleton::clone(){
-    return new Exoskeleton(*this);
   }
   
   std::ostream& operator<<(std::ostream& os, Exoskeleton& exo_skeleton){

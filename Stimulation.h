@@ -11,29 +11,30 @@
 #include <iostream>
 #include <limits>
 #include <list>
+#include <vector>
 #include <memory>
 #include <iterator>
+#include <fstream>
+#include <string>
 #include "Exceptions.h"
-typedef short sint;
 namespace ARAIG {
   const int duration_max = 300;
-  const sint intensity_max = 100, frequency_max = 10000;
+  const int intensity_max = 100, frequency_max = 10000;
   class Stimulation {
   protected:
     std::string stimName_;
     std::string stimType_;
-    sint intensity_ = 0;
-    sint duration_ = 0;
+    int intensity_ = 0;
+    int duration_ = 0;
   public:
     Stimulation()=delete;
-    Stimulation (std::string, sint, int);
-    virtual Stimulation* clone() = 0;
+    Stimulation (std::string, int, int);
     virtual std::string getName()const;
     virtual std::ostream& display(std::ostream& os)const = 0;
   };
 }
 const int max_duration = ARAIG::duration_max;
-const sint max_intensity = ARAIG::intensity_max;
-const sint max_frequency = ARAIG::frequency_max;
+const int max_intensity = ARAIG::intensity_max;
+const int max_frequency = ARAIG::frequency_max;
 
 #endif /* Stimulation_h */

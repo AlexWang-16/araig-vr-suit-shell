@@ -12,7 +12,7 @@
 #include <iostream>
 #include "Stimulation.h"
 namespace ARAIG {
-  Stimulation::Stimulation (std::string name, sint intensity, int duration): stimName_(name){
+  Stimulation::Stimulation (std::string name, int intensity, int duration): stimName_(name){
     
     try{
       if (!name.length()){

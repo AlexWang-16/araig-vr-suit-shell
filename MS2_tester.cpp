@@ -8,13 +8,11 @@
 //  Copyright © 2016 Alex Wang. All rights reserved.
 //
 
-#include <iostream>
 #include "Stims.h"
 #include "Exoskeleton.h"
 #include "Task.h"
 using namespace ARAIG;
-extern const int max_duration;
-extern const sint max_intensity;
+extern const int max_duration, max_intensity;
 
 const void print_dash(int x = 30) {
   //Creates underline for titles
@@ -28,6 +26,13 @@ const void new_line(int x = 1) {
   //Prints i number of newline characters
   for (int i = 0; i < x; i++){
     std::cout << '\n';
+  }
+}
+
+void data_parameter_positions(std::string input, int num_pos, std::vector<size_t>& list){
+  //Takes in number of positions and stores positions for 2nd parameter onwards
+  for (int i = 1; i < num_pos - 1; i++){
+    list.push_back(input.find(',', list[i-1] + 1));
   }
 }
 
@@ -57,7 +62,67 @@ int main(int argc, const char * argv[]) {
   
   //Test: Creating a generic task and add 3 stimulations to the Task, then print out task information and details of each stimulation
   //Expected: It should print "Task 5 Task_5" followed by the stimulation information
+  std::ifstream file ("StimulationConfig.csv");
+  try {
+    if(!file){
+      throw Exceptions ("Error: Cannot open file");
+    }
+  }catch (Exceptions& e){
+    std::cerr << e.what() <<'\n';
+    std::cerr.flush();
+    exit(2);
+  }
   
+  std::list<Stimulation*> stim_list;
+  std::vector<size_t> comma;
+  while (!file.fail()){
+    //Create Stim objects and store them into a list :)
+    std::string data, type, name, location;
+    int intensity, frequency, duration;
+    
+    getline(file, data);
+    
+    if (data.find('\r')){
+      //Detects \n characters and trim it
+      data = data.substr(0,data.length()-1);
+    }
+    
+    comma.push_back (data.find(','));
+    type = data.substr(0, comma[0]);
+    if (type == "stim") {
+      data_parameter_positions(data, 6, comma);
+      name = data.substr(comma[0]+1, comma[1] - comma[0]-1);
+      location = data.substr(comma[1]+1, comma[2] - comma[1]-1);
+      intensity = stoi(data.substr(comma[2]+1, comma[3]-comma[2]-1));
+      frequency = stoi(data.substr(comma[3]+1, comma[4]-comma[3]-1));
+      duration = stoi(data.substr(comma[4]+1));
+      stim_list.push_back(new Stims(name, location, intensity, frequency, duration));
+      
+    } else if (type == "exoskeleton") {
+      data_parameter_positions(data, 4, comma);
+      name = data.substr(comma[0]+1, comma[1] - comma[0]-1);
+      intensity = stoi(data.substr(comma[1]+1, comma[2]-comma[1]-1));
+      
+      duration = stoi(data.substr(comma[2]+1));
+      
+      stim_list.push_back(new Exoskeleton(name, intensity, duration));
+    }
+    comma.clear();
+  }
+  
+  Task echo;
+  for_each (stim_list.begin(), stim_list.end(), [&echo](Stimulation* i){
+    echo += i;
+  });
+  
+  std::cout << "Task Echo\n";
+  print_dash();
+  echo.dump(std::cout);
+  echo.execute(std::cout);
+  new_line();
+  //TODO: Reference data into Task Echo
+  
+  /*
   Stims s1("Stim1", "back", 50, 50, 50);
   Stims s2("Stims2", "front", 60, 60, 60);
   Exoskeleton ex1 ("Exo1", 50, 100);
@@ -124,5 +189,5 @@ int main(int argc, const char * argv[]) {
   
   //Task india;
   //india (Task (golf));
-
+   */
 }

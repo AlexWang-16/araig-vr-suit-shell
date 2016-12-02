@@ -51,7 +51,7 @@ namespace ARAIG {
     return location;
   }
   
-  Stims::Stims(std::string name, std::string location, sint intensity, sint frequency, int duration): Stimulation(name, intensity, duration){
+  Stims::Stims(std::string name, std::string location, int intensity, int frequency, int duration): Stimulation(name, intensity, duration){
       stimLocation_ = stringToLocation(location);
     
     if (frequency >= 0 && frequency <= max_frequency){
@@ -75,9 +75,5 @@ namespace ARAIG {
     os << ' ' << "Duration = " << duration_;
     os.flush();
     return os;
-  }
-  
-  Stimulation* Stims::clone(){
-    return new Stims(*this);
   }
 }
