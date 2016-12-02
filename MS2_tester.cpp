@@ -76,7 +76,7 @@ int main(int argc, const char * argv[]) {
   std::list<Stimulation*> stim_list;
   std::vector<size_t> comma;
   while (!file.fail()){
-    //Create Stim objects and store them into a list :)
+  
     std::string data, type, name, location;
     int intensity, frequency, duration;
     
@@ -189,4 +189,5 @@ int main(int argc, const char * argv[]) {
   golf.dump(std::cout);
   golf.execute(std::cout);
   new_line();
+  
 }
