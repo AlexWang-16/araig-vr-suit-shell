@@ -36,7 +36,7 @@ namespace ARAIG{
   
   Task::Task (Task&& src){
     //Move constructor
-    move(src.task_id_, src.name_, src.task_num_, src.task_list_);
+    *this = std::move(src);
   }
   
   Task::~Task() {

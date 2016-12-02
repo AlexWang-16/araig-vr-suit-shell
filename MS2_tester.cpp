@@ -120,19 +120,9 @@ int main(int argc, const char * argv[]) {
   echo.dump(std::cout);
   echo.execute(std::cout);
   new_line();
+  
   //TODO: Reference data into Task Echo
   
-  /*
-  Stims s1("Stim1", "back", 50, 50, 50);
-  Stims s2("Stims2", "front", 60, 60, 60);
-  Exoskeleton ex1 ("Exo1", 50, 100);
-  Task echo;
-  echo += s1.clone();
-  echo += s2.clone();
-  echo += ex1.clone();
-  echo.dump(std::cout);
-  echo.execute(std::cout);
-  new_line();
   
   //Test: Print the 2nd element from Echo using overloaded [] operator
   //Expected: Stims 2 data
@@ -162,9 +152,9 @@ int main(int argc, const char * argv[]) {
   
   //Test: Removing the 3rd Stimulation from Echo (Exoskeleton element)
   //Expected: 2 Stims remain when execute() is executed
-  std::cout << "Deleting Exo1 from Task 5 (echo)\n";
+  std::cout << "Deleting Sim1 from Task 5 (echo)\n";
   print_dash(33);
-  echo.removeStim("Exo1");
+  echo.removeStim("Sim1");
   echo.dump(std::cout);
   echo.execute(std::cout);
   new_line(2);
@@ -173,6 +163,7 @@ int main(int argc, const char * argv[]) {
   //Expecting: hotel to contain foxtrot's information and foxtrot's data should be wiped and not print any data.
   Task hotel;
   hotel = std::move(foxtrot);
+  std::cout << "Test move assignment operator to move foxtrot's data into hotel.\nMoving data...\n\n";
   std::cout << "Hotel's data\n";
   print_dash(12);
   hotel.dump(std::cout);
@@ -182,12 +173,20 @@ int main(int argc, const char * argv[]) {
   print_dash(22);
   foxtrot.dump(std::cout);
   foxtrot.execute(std::cout);
+  new_line(2);
   
   //Test: Using move constructor to move golf's data to Task India
   //Expected: Task India should have all of golf's contents while golf will print empty data
   //Need help here. Not sure how to test move constructor.
-  
-  //Task india;
-  //india (Task (golf));
-   */
+  std::cout << "Test: Moving tasks in golf data over to india using move constructor. Golf should be empty after.\n";
+  print_dash();
+  Task india (std::move(golf));
+  india.dump(std::cout);
+  india.execute(std::cout);
+  new_line(2);
+  std::cout << "Golf's data\n";
+  print_dash();
+  golf.dump(std::cout);
+  golf.execute(std::cout);
+  new_line();
 }
