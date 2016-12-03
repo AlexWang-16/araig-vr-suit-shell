@@ -14,16 +14,12 @@ namespace ARAIG{
   int Task::global_task_num = 1;
   
   Task::Task(){
-    task_num_ = global_task_num;
-    task_id_ = task_id_ + std::to_string(task_num_);
-    name_ = name_ + std::to_string(task_num_);
+    name_ = name_ + std::to_string(global_task_num);
     global_task_num++;
   }
   
   Task::Task(std::string name){
-    task_num_ = global_task_num;
-    name_ = name_ + std::to_string(task_num_);
-    task_id_ = task_id_ + std::to_string(task_num_);
+    name_ = name_ + std::to_string(global_task_num);
     if (name.length() > 0){
       name_ = name;
     }
@@ -31,7 +27,7 @@ namespace ARAIG{
   }
   
   Task::Task (const Task& src){
-    copy(src.task_id_, src.name_, src.task_num_, src.task_list_);
+    copy(src.name_, src.task_list_);
   }
   
   Task::Task (Task&& src){
@@ -40,47 +36,38 @@ namespace ARAIG{
   }
   
   Task::~Task() {
-    task_id_.clear();
-    name_.clear();
-    task_list_.clear();
-    task_num_ = 0;
+    clear();
   }
   
   Task& Task::operator=(const Task& src){
     if (&src != this){
-      copy(src.task_id_, src.name_, src.task_num_, src.task_list_);
+      copy(src.name_, src.task_list_);
     }
     return *this;
   }
   
   Task& Task::operator=(Task&& src){
     if (this != &src){
-      move(src.task_id_, src.name_, src.task_num_, src.task_list_);
+      move(src.name_, src.task_list_);
     }
     return *this;
   }
   
-  void Task::copy (std::string task_id, std::string name, int task_num, std::list<Stimulation*>tsk_list){
-      task_id_ = task_id;
+  void Task::copy (std::string name, std::list<Stimulation*>tsk_list){
       name_ = name;
-      task_num_ = task_num;
       for (Stimulation* element : tsk_list){
         task_list_.push_back(element);
       }
   }
   
-  void Task::move (std::string& task_id, std::string& name, int& task_num, std::list<Stimulation*>& task_list){
-    task_id_ = task_id;
+  void Task::move (std::string& name, std::list<Stimulation*>& task_list){
     name_ = name;
-    task_num_ = task_num;
     task_list_.clear();
     for (auto i = task_list.begin(); i !=task_list.end(); i++){
       task_list_.push_back(*i);
     }
     //House Cleaning
-    task_id.clear();
     name.clear();
-    task_num = 0;
     task_list.clear();
   }
   
@@ -102,6 +89,13 @@ namespace ARAIG{
     return task_list_.size();
   }
   
+  std::string Task::getName()const{
+    return name_;
+  }
+  void Task::setName(std::string name){
+    if (name.length() > 0)
+      name_ = name;
+  }
   void Task::removeStim(std::string name){
     //Search task_list_ for item and delete
     auto i = task_list_.begin();
@@ -115,8 +109,14 @@ namespace ARAIG{
     }
   }
   
+  void Task::clear(){
+    //resets task data
+    name_.clear();
+    task_list_.clear();
+  }
+  
   std::ostream& Task::dump(std::ostream& os)const{
-    os << task_id_ << ' ' << name_ << '\n';
+    os << name_ << '\n';
     os << "Number of stimulations in task list: " << getSize() <<'\n';
     os.flush();
     return os;

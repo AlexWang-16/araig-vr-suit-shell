@@ -16,6 +16,7 @@
 #include <iterator>
 #include <fstream>
 #include <string>
+#include <algorithm>
 #include "Exceptions.h"
 namespace ARAIG {
   const int duration_max = 300;

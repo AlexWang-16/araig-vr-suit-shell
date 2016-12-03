@@ -38,9 +38,5 @@ int main(int argc, const char * argv[]) {
   //Test: Creating a stim_list vector that holds a list of stimulations read from a file
   //Expected: A vector called stim_list should be created with 32 stimulations inside
   
-  ARAIG_sensors alpha ("StimulationConfig1.csv", "b.txt");
-  
-  
-
-  
+  ARAIG_sensors alpha ("StimulationConfig.csv", "TaskConfiguration.csv");
 }
