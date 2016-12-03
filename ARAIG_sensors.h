@@ -13,5 +13,13 @@
 #define ARAIG_sensors_H
 
 #include "Stimulation.h"
-
+namespace ARAIG {
+  class ARAIG_sensors{
+    void stims_data_positions(std::string input, int num_pos, std::vector<size_t>& list);
+  public:
+    ARAIG_sensors (std::string stims_filename, std::string tasks_filename);
+    ~ARAIG_sensors();
+    std::ostream& dump(std::ostream& os);
+  };
+}
 #endif /* ARAIG_sensors_H */

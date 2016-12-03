@@ -11,7 +11,9 @@
 
 #include "Exceptions.h"
 namespace ARAIG {
-  const char* Exceptions::what() const throw (){return msg_.c_str();}
+  const char* Exceptions::what() const throw (){return (msg_ + filename_).c_str();}
   
   Exceptions::Exceptions(std::string msg):msg_(msg){};
+  
+  Exceptions::Exceptions(std::string msg, std::string filename):msg_(msg), filename_(filename){}
 }
