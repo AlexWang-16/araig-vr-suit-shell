@@ -12,8 +12,7 @@
 #include "Stims.h"
 #include "Exoskeleton.h"
 using namespace ARAIG;
-extern const int max_duration;
-extern const sint max_intensity;
+extern const int max_duration, max_intensity;
 
 int main(int argc, const char * argv[]) {
   

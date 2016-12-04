@@ -15,6 +15,7 @@
 #include "Stimulation.h"
 #include "Task.h"
 namespace ARAIG {
+  std::vector<std::string> split(std::string str);
   class ARAIG_sensors{
     std::vector<Stimulation*> stim_list_;
     std::list<Task> task_list_;
