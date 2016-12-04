@@ -9,9 +9,6 @@
 //  Copyright © 2016 Alex Wang. All rights reserved.
 //
 
-//Goal: Create my own string tokenizing function that will efficently parse data that is robust for both
-//StimulationConfig and TaskConfig files
-
 #include "ARAIG_sensors.h"
 #include "Exoskeleton.h"
 #include "Stims.h"
