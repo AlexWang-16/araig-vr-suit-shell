@@ -44,7 +44,6 @@ namespace ARAIG {
       
       getline(f, data);
       
-      //TODO
       data.erase(std::remove_if(data.begin(), data.end(), [](char i){
         switch (i){
           case ' ':
@@ -182,5 +181,4 @@ namespace ARAIG {
       std::cout << '\n';});
     return os;
   }
-  
 }
