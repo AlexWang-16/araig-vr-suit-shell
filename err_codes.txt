@@ -1,0 +1,12 @@
+README
+
+This page contains all the error codes that are raised by exception in the program
+
+Format: Code - Message
+
+Argument error:
+1 - Incorrect number of arguments
+
+File error
+2 - Cannot open (filename)
+3 - Data corruption. Unexpected data format.

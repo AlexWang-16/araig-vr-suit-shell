@@ -24,12 +24,12 @@ namespace ARAIG {
   class Stimulation {
   protected:
     std::string stimName_;
-    std::string stimType_;
     int intensity_ = 0;
     int duration_ = 0;
   public:
     Stimulation()=delete;
-    Stimulation (std::string, int, int);
+    Stimulation (std::string name, int intensity, int duration);
+    virtual ~Stimulation();
     virtual std::string getName()const;
     virtual std::ostream& display(std::ostream& os)const = 0;
   };

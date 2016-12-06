@@ -28,7 +28,6 @@ namespace ARAIG{
     Task& operator=(const Task& src);
     Task& operator=(Task&& src);
     void copy(std::string name, std::list<Stimulation*>task_list);
-    void move(std::string& name, std::list<Stimulation*>&task_list);
     void operator+=(Stimulation* ptr);
     Stimulation* operator[] (unsigned int i)const;
     long getSize()const;

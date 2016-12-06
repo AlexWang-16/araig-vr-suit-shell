@@ -21,8 +21,8 @@ int main(int argc, const char * argv[]) {
   //  Stims emptyStim;
   //  emptyStim.display(std::cout) << '\n';
   
-  Stims alphaStim ("Stim1", "back", 87, 35, 10);
-  alphaStim.display(std::cout) << '\n';
+  Stims* alphaStim = new Stims ("Stim1", "back", 87, 35, 10);
+  alphaStim->display(std::cout) << '\n';
   
   //Test: Intensity negative values
   //Expected: Intensity, Frequency, Duration all set to 0
@@ -52,8 +52,8 @@ int main(int argc, const char * argv[]) {
   
   //Test: Stim with empty location
   //Expected: Location will be declared as none
-  Stims noLocation_stims ("Stim7", "", 50, 50, 50);
-  noLocation_stims.display(std::cout) << '\n';
+  //Stims noLocation_stims ("Stim7", "", 50, 50, 50);
+  //noLocation_stims.display(std::cout) << '\n';
   
   //Test: constructing an empty exoskeleton object
   //Expected: Compilation should fail because empty constructor has been deleted
@@ -61,7 +61,7 @@ int main(int argc, const char * argv[]) {
 
   
   Exoskeleton alphaExo ("Exo1", 66, 5);
-  alphaExo.display(std::cout) << '\n';
+  //alphaExo.display(std::cout) << '\n';
   
   //Test: Empty Exoskeleton name
   //Expected: An exception is thrown. Any stim without a piece of information that will render output errors will be stopped
@@ -70,16 +70,18 @@ int main(int argc, const char * argv[]) {
   
   //Test: Exoskeleton with negative intensity and duration
   //Expected: Intensity and duration both set to 0
-  Exoskeleton negativeExo ("Exo3", -1, -1);
-  negativeExo.display(std::cout) << '\n';
+  //Exoskeleton negativeExo ("Exo3", -1, -1);
+  //negativeExo.display(std::cout) << '\n';
   
   //Test: Exoskeleton exceeding max intensity
   //Expected: Intesnity should be set to 100 (max intensity)
-  Exoskeleton intesityOverload_exo ("Exo4", max_intensity + 1, 50);
-  intesityOverload_exo.display(std::cout) << '\n';
+  //Exoskeleton intesityOverload_exo ("Exo4", max_intensity + 1, 50);
+  //intesityOverload_exo.display(std::cout) << '\n';
   
   //Test: Exoskeleton exceeding max duration
   //Expected: Intesnity should be set to max_duration
-  Exoskeleton durationOverload_exo ("Exo5", 50, duration_max + 1);
-  durationOverload_exo.display(std::cout) << '\n';
+  //Exoskeleton durationOverload_exo ("Exo5", 50, duration_max + 1);
+  //durationOverload_exo.display(std::cout) << '\n';
+  delete alphaStim;
+  return 0;
 }

@@ -22,7 +22,7 @@ namespace ARAIG {
     } catch (Exceptions& e){
       std::cerr << e.what() << '\n';
       std::cerr.flush();
-      exit(1);
+      exit(3);
     }
     
     if (intensity > 0 && intensity <= max_intensity){
@@ -35,6 +35,12 @@ namespace ARAIG {
     duration_ = duration;
     } else if (duration > max_duration)
       duration_ = max_duration;
+  }
+  
+  Stimulation::~Stimulation(){
+    stimName_.clear();
+    intensity_ = 0;
+    duration_ = 0;
   }
   
   std::string Stimulation::getName()const{

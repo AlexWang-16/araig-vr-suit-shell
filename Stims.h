@@ -26,7 +26,7 @@ namespace ARAIG {
   public:
     Stims() = delete;
     Stims (std::string name, std::string location, int intensity, int frequency, int duration);
-    //~Stims(); not sure if I need this yet
+    ~Stims();
     std::ostream& display(std::ostream& os)const;
     
   };

@@ -61,6 +61,12 @@ namespace ARAIG {
     }
   }
   
+  Stims::~Stims(){
+    stimType_.clear();
+    frequency_ = 0;
+    stimLocation_ = NONE;
+  }
+  
   std::ostream& Stims::display(std::ostream& os)const{
     os << stimName_ << '\n';
     os.width(5);

@@ -16,7 +16,7 @@
 
 namespace ARAIG {
   
-  std::vector<std::string> split(std::string str){
+  std::vector<std::string> split(std::string str, char delim){
     std::vector<std::string> temp;
     std::string value;
     size_t comma = 0;
@@ -45,7 +45,7 @@ namespace ARAIG {
     
     while (str.length() > 0){
       //There's some data
-      comma = str.find(',');
+      comma = str.find(delim);
       if (comma < std::string::npos){
         //I've found a comma
         value = str.substr(0, comma);
@@ -89,7 +89,7 @@ namespace ARAIG {
     while (!f.fail()){
       //Reading stimulation configuration
       getline(f, data);
-      result = split(data);
+      result = split(data, ',');
       type = result[0];
       if (type == "stim") {
         name = result[1];
@@ -124,7 +124,7 @@ namespace ARAIG {
     while (!f.fail()){
       
       getline(f, data);
-      result = split(data);
+      result = split(data, ',');
       header = result[0].substr(0,3);
       
       if (header == "TAS"){

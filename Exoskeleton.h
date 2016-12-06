@@ -19,7 +19,7 @@ namespace ARAIG {
   public:
     Exoskeleton() = delete;
     Exoskeleton(std::string name, int intensity, int duration);
-    //~Exoskeleton(); not sure if I need this yet
+    ~Exoskeleton();
     std::ostream& display(std::ostream& os)const;
   };
   std::ostream& operator<<(std::ostream os, Exoskeleton& exo_skeleton);

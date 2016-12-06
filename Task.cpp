@@ -48,7 +48,12 @@ namespace ARAIG{
   
   Task& Task::operator=(Task&& src){
     if (this != &src){
-      move(src.name_, src.task_list_);
+      name_ = src.name_;
+      task_list_.clear();
+      task_list_ = src.task_list_;
+      //House Cleaning
+      src.name_.clear();
+      src.task_list_.clear();
     }
     return *this;
   }
@@ -58,17 +63,6 @@ namespace ARAIG{
       for (Stimulation* element : tsk_list){
         task_list_.push_back(element);
       }
-  }
-  
-  void Task::move (std::string& name, std::list<Stimulation*>& task_list){
-    name_ = name;
-    task_list_.clear();
-    for (auto i = task_list.begin(); i !=task_list.end(); i++){
-      task_list_.push_back(*i);
-    }
-    //House Cleaning
-    name.clear();
-    task_list.clear();
   }
   
   void Task::operator+=(Stimulation* ptr){
@@ -113,6 +107,7 @@ namespace ARAIG{
     //resets task data
     name_.clear();
     task_list_.clear();
+    task_num_ = 0;
   }
   
   std::ostream& Task::dump(std::ostream& os)const{

@@ -25,6 +25,10 @@ namespace ARAIG {
     return os;
   }
   
+  Exoskeleton::~Exoskeleton(){
+    stimType_.clear();
+  }
+  
   std::ostream& operator<<(std::ostream& os, Exoskeleton& exo_skeleton){
     exo_skeleton.display(os);
     return os;
