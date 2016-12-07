@@ -21,6 +21,8 @@
 namespace ARAIG {
   const int duration_max = 300;
   const int intensity_max = 100, frequency_max = 10000;
+  std::vector<std::string> split(std::string str, char delim = ' ');
+  void skip_blank_lines(std::ifstream& file, std::vector<std::string>& result);
   class Stimulation {
   protected:
     std::string stimName_;

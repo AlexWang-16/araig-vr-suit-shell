@@ -13,60 +13,9 @@
 #include "Exoskeleton.h"
 #include "Stims.h"
 #include "Task.h"
+#include "Stimulation.h"
 
 namespace ARAIG {
-  
-  std::vector<std::string> split(std::string str, char delim){
-    std::vector<std::string> temp;
-    std::string value;
-    size_t comma = 0;
-    //Stripping the entire string of white spaces and \r
-    str.erase(std::remove_if(str.begin(), str.end(), [](char i){
-      switch(i){
-          case ' ':
-            return true;
-            break;
-          case '\r':
-            return true;
-            break;
-          case '\n':
-            return true;
-            break;
-        default:
-          return false;
-          break;
-      }
-    }), str.end());
-    
-    if (str.length() == 0){
-      //Let the vector return 1 element of an empty string with 1 space to signal an empty space. ARAIG_sensors constructor will handle note that it is not a Stimulation or task and skip it.
-      str =" ";
-    }
-    
-    while (str.length() > 0){
-      //There's some data
-      comma = str.find(delim);
-      if (comma < std::string::npos){
-        //I've found a comma
-        value = str.substr(0, comma);
-        temp.push_back(value);
-        str = str.substr(comma + 1);
-      }else{
-        //I'm at the last item
-        temp.push_back(str);
-        str.clear();
-      }
-    }
-    value.clear();
-    return temp;
-  }
-  
-  void ARAIG_sensors::stims_data_positions(std::string input, int num_pos, std::vector<size_t>& list){
-    //Takes in number of positions and stores positions for 2nd parameter onwards
-    for (int i = 1; i < num_pos - 1; i++){
-      list.push_back(input.find(',', list[i-1] + 1));
-    }
-  }
 
   ARAIG_sensors::ARAIG_sensors(std::string stims_filename, std::string tasks_filename){
     
@@ -84,7 +33,7 @@ namespace ARAIG {
     std::string data, type, name, location, header, err_msg;
     int intensity, frequency, duration, index = 0;
     std::vector<std::string> result, errors;
-    Task temp_task;
+    Task* temp_task = nullptr;
   
     while (!f.fail()){
       //Reading stimulation configuration
@@ -130,17 +79,17 @@ namespace ARAIG {
       if (header == "TAS"){
         //Detects an incomming TASK
         
-        if (temp_task.getSize() > 0){
+        if (temp_task && temp_task->getSize() > 0){
           //A task has completed, push it into the list!
-          task_list_.push_back(temp_task);
+          task_list_.push_back(std::move(temp_task));
+          temp_task = nullptr;
         }
         
         //Start a fresh task and give it a name
-        temp_task.clear();
-        temp_task.setName(result[1]);
+        temp_task = new Task;
+        temp_task->setName(result[1]);
         
       } else if (header == "Sim") {
-        
         //Detect Stimulation number and grab it from the vector
         index = stoi(result[0].substr(3));
         
@@ -154,43 +103,63 @@ namespace ARAIG {
         else if (index > stim_list_.size()){
           //Check for out of upper bound index
           err_msg = "Error: Cannot add Sim" + std::to_string(index);
-          err_msg += " to " + temp_task.getName();
+          err_msg += " to " + temp_task->getName();
           err_msg += ". Stimulation not found.\n";
           errors.push_back(err_msg);
           err_msg.clear();
         } else if (stim_list_[index-1]->getName() == result[0]){
           //Final comparison check
-          temp_task += stim_list_[index-1];
-        }
+          if (temp_task){
+            *temp_task += stim_list_[index-1];
+          }else{
+            errors.push_back (std::string("Error: No task instantiated to accept the Stimulation. Skipping Sim" + std::to_string(index) + ".\n"));
+          }
       }
     }
-    //Final push and house cleaning
-    task_list_.push_back(temp_task);
-    temp_task.clear();
-    dump(std::cout);
-    
-    if (errors.size()){
-      //If errors existed while adding stimulations, print them out
-      std::for_each(errors.begin(), errors.end(), [&errors](std::string msg){
-        std::cerr << msg;
-      });
-      errors.clear();
-    }
   }
+  //Final push and house cleaning
+  task_list_.push_back(temp_task);
+  temp_task = nullptr;
+  dump(std::cout);
   
+  if (errors.size()){
+    //If errors existed while adding stimulations, print them out
+    std::for_each(errors.begin(), errors.end(), [&errors](std::string msg){
+      std::cerr << msg;
+    });
+    errors.clear();
+  }
+}
   ARAIG_sensors::~ARAIG_sensors(){
     stim_list_.clear();
     task_list_.clear();
   }
   
+  long ARAIG_sensors::getTaskSize(){
+    return task_list_.size();
+  }
+  
+  Task& ARAIG_sensors::getTask(int index){
+    if (index < task_list_.size()){
+      std::list<Task*>::iterator it = task_list_.begin();
+      std::advance(it, index);
+      return *(*it);
+    } else {
+      return dummy;
+    }
+  }
+  
   std::ostream& ARAIG_sensors::dump (std::ostream& os) {
     //Iterate through the entire list and run dump and execute()
-    
-    std::for_each(task_list_.begin(), task_list_.end(), [&](Task i){
-      i.dump(std::cout);
-      std::cout << '\n';
-      i.execute(std::cout);
-      std::cout << '\n';});
+
+    std::for_each(task_list_.begin(), task_list_.end(), [&](Task* i){
+      if (i){
+        i->dump(std::cout);
+        std::cout << '\n';
+        i->execute(std::cout);
+          std::cout << '\n';
+      }
+    });
     return os;
   }
 }

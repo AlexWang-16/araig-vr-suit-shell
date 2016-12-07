@@ -27,7 +27,7 @@ namespace ARAIG{
   }
   
   Task::Task (const Task& src){
-    copy(src.name_, src.task_list_);
+    *this = (src);
   }
   
   Task::Task (Task&& src){
@@ -41,7 +41,10 @@ namespace ARAIG{
   
   Task& Task::operator=(const Task& src){
     if (&src != this){
-      copy(src.name_, src.task_list_);
+      name_ = src.name_;
+      for (Stimulation* element : src.task_list_){
+        task_list_.push_back(element);
+      }
     }
     return *this;
   }
@@ -56,13 +59,6 @@ namespace ARAIG{
       src.task_list_.clear();
     }
     return *this;
-  }
-  
-  void Task::copy (std::string name, std::list<Stimulation*>tsk_list){
-      name_ = name;
-      for (Stimulation* element : tsk_list){
-        task_list_.push_back(element);
-      }
   }
   
   void Task::operator+=(Stimulation* ptr){

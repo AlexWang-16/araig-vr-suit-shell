@@ -15,15 +15,15 @@
 #include "Stimulation.h"
 #include "Task.h"
 namespace ARAIG {
-  std::vector<std::string> split(std::string str);
   class ARAIG_sensors{
     std::vector<Stimulation*> stim_list_;
-    std::list<Task> task_list_;
-    
-    void stims_data_positions(std::string input, int num_pos, std::vector<size_t>& list);
+    std::list<Task*> task_list_;
+    Task dummy;
   public:
     ARAIG_sensors (std::string stims_filename, std::string tasks_filename);
     ~ARAIG_sensors();
+    long getTaskSize();
+    Task& getTask(int index);
     std::ostream& dump(std::ostream& os);
   };
 }

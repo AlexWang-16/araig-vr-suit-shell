@@ -34,7 +34,7 @@ const void new_line(int x = 1) {
 
 int main(int argc, const char * argv[]) {
   
-  ARAIG_sensors alpha ("StimulationConfig.csv", "TaskConfiguration2.csv");
+  ARAIG_sensors alpha ("StimulationConfig.csv", "TaskConfiguration.csv");
   
-  Profile ("SampleProfileConfiguration.csv", std::cout, alpha);
+  Profile ("SampleProfileConfiguration3.csv", std::cout, alpha);
   }
