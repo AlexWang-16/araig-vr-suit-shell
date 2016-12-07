@@ -1,5 +1,5 @@
 //
-//  MS3_tester.cpp
+//  MS4_tester.cpp
 //
 //  ARAIG - As Real As It Gets Augmented reality game suit final project
 //  For BTP305 C++ course at Seneca
@@ -8,11 +8,11 @@
 //  Copyright © 2016 Alex Wang. All rights reserved.
 //
 
-#include "Stimulation.h"
 #include "Stims.h"
 #include "Exoskeleton.h"
 #include "Task.h"
 #include "ARAIG_sensors.h"
+#include "profile.h"
 using namespace ARAIG;
 extern const int max_duration, max_intensity;
 
@@ -33,10 +33,8 @@ const void new_line(int x = 1) {
 
 
 int main(int argc, const char * argv[]) {
-
-  
-  //Test: Creating a stim_list vector that holds a list of stimulations read from a file
-  //Expected: A vector called stim_list should be created with 32 stimulations inside
   
   ARAIG_sensors alpha ("StimulationConfig.csv", "TaskConfiguration2.csv");
+  
+  Profile ("SampleProfileConfiguration.csv", std::cout, alpha);
   }
