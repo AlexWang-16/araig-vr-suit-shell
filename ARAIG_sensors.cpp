@@ -37,8 +37,7 @@ namespace ARAIG {
   
     while (!f.fail()){
       //Reading stimulation configuration
-      getline(f, data);
-      result = split(data, ',');
+      skip_blank_lines(f, result);
       type = result[0];
       if (type == "stim") {
         name = result[1];
@@ -72,8 +71,7 @@ namespace ARAIG {
     //Reading Task Configurations
     while (!f.fail()){
       
-      getline(f, data);
-      result = split(data, ',');
+      skip_blank_lines(f, result);
       header = result[0].substr(0,3);
       
       if (header == "TAS"){
