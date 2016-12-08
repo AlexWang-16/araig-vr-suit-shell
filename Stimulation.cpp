@@ -69,6 +69,14 @@ namespace ARAIG {
     }while (!file.fail() && result[0] == " ");
   }
   
+  const void print_dash(int x) {
+    //Creates underline for titles
+    std::cout.width(x);
+    std::cout.fill('-');
+    std::cout << '-' << '\n';
+    std::cout.fill (' ');
+  }
+  
   Stimulation::Stimulation (std::string name, int intensity, int duration): stimName_(name){
     
     try{

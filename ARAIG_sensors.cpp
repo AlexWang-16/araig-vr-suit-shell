@@ -120,7 +120,6 @@ namespace ARAIG {
   //Final push and house cleaning
   task_list_.push_back(temp_task);
   temp_task = nullptr;
-  dump(std::cout);
   
   if (errors.size()){
     //If errors existed while adding stimulations, print them out

@@ -19,16 +19,16 @@ class Profile{
   std::string studentFName_, studentLName_, studentNum_;
   std::string instructorFname_, instructorLName_, instructorNum_;
   int calMax_, calMin_;
-  std::vector<Task>ToRun_;
-  std::vector<Task>Completed_;
+  std::deque<Task*>ToRun_;
+  std::deque<Task*>Completed_;
 public:
   Profile (std::string filename, std::ostream& os, ARAIG_sensors& as);
   
   void run();
   //Display all tasks to the screen
-  std::ostream& display_todo_task (std::ostream& os) const;
+  std::ostream& display_todo_tasks (std::ostream& os) const;
   //Display completed tasks to the screen
-  std::ostream& display_completed_task (std::ostream& os)const;
+  std::ostream& display_completed_tasks (std::ostream& os)const;
   //Display next task to the screen
   std::ostream& display_next_task (std::ostream& os) const;
   //Display last completed task

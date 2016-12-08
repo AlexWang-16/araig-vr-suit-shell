@@ -97,7 +97,7 @@ namespace ARAIG{
         }else if (index > max_index){
           errors.push_back (std::string("Error: Task requested does not exist. Skipping Task" + std::to_string(index) + "."));
         }else{
-          ToRun_.push_back(Task (as.getTask(index + 1)));
+          ToRun_.push_back(new Task (as.getTask(index + 1)));
         }
       }
     }
@@ -112,25 +112,64 @@ namespace ARAIG{
   
   void Profile::run(){
     //Execute the next task in ToRun container
+    if (ToRun_.size() > 0){
+      ToRun_[0]->execute(std::cout);
+      Completed_.push_back(std::move(ToRun_[0]));
+      ToRun_.pop_front();
+    }else{
+      std::cout << "There are no more tasks to run.\n";
+    }
   }
   
-  std::ostream& Profile::display_todo_task(std::ostream& os)const{
+  std::ostream& Profile::display_todo_tasks(std::ostream& os)const{
     //Display all tasks in ToRun container
+    if(ToRun_.size() > 0){
+      std::cout << "Tasks To run\n";
+      print_dash();
+      for_each(ToRun_.begin(), ToRun_.end(), [&](Task* e){
+        if (e != nullptr){
+          os << e->getName() <<'\n';
+        }
+      });
+    }else{
+      std::cerr << "There are no tasks to be performed in the task list.\n";
+      std::cerr.flush();
+    }
     return os;
   }
   
-  std::ostream& Profile::display_completed_task(std::ostream& os) const{
+  std::ostream& Profile::display_completed_tasks(std::ostream& os) const{
     //Display all completed tasks on screen
+    if (Completed_.size()>0){
+      for_each(Completed_.begin(), Completed_.end(), [&](Task* e) {
+        if (e != nullptr){
+          os << e->getName();
+        }
+      });
+    }else{
+      std::cerr << "There are no completed tasks. No tasks has been executed.\n";
+      std::cerr.flush();
+    }
     return os;
   }
   
   std::ostream& Profile::display_next_task(std::ostream& os) const{
     //Display next task to the screen
+    if (ToRun_.size() > 0){
+      os << ToRun_[0]->getName() <<'\n';
+    }else{
+      os << "There is no task to be executed next.\n";
+    }
     return os;
   }
   
   std::ostream& Profile::display_last_task(std::ostream& os)const{
     //Display last completed task to screen
+    if (Completed_.size() > 0){
+      os << Completed_[Completed_.size() - 1]->getName() << '\n';
+    }else{
+      os << "No Task has been completed yet.\n";
+    }
     return os;
   }
 }
