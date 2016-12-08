@@ -115,7 +115,7 @@ namespace ARAIG{
     if (ToRun_.size() > 0){
       ToRun_[0]->execute(std::cout);
       Completed_.push_back(std::move(ToRun_[0]));
-      ToRun_.pop_front();
+      ToRun_.erase(ToRun_.begin());
     }else{
       std::cout << "There are no more tasks to run.\n";
     }

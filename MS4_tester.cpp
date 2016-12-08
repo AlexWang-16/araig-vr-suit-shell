@@ -26,6 +26,10 @@ const void new_line(int x = 1) {
 
 int main(int argc, const char * argv[]) {
   
+  //TODO: Main needs to take in 4 command line arguments!
+  
+  //TODO: Main nneeds to open ostream using output file provided!
+  
   ARAIG_sensors alpha ("StimulationConfig.csv", "TaskConfiguration.csv");
   
   Profile p1 ("SampleProfileConfiguration.csv", std::cout, alpha);

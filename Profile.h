@@ -19,8 +19,8 @@ class Profile{
   std::string studentFName_, studentLName_, studentNum_;
   std::string instructorFname_, instructorLName_, instructorNum_;
   int calMax_, calMin_;
-  std::deque<Task*>ToRun_;
-  std::deque<Task*>Completed_;
+  std::vector<Task*>ToRun_;
+  std::vector<Task*>Completed_;
 public:
   Profile (std::string filename, std::ostream& os, ARAIG_sensors& as);
   
