@@ -143,7 +143,7 @@ namespace ARAIG{
     if (Completed_.size()>0){
       for_each(Completed_.begin(), Completed_.end(), [&](Task* e) {
         if (e != nullptr){
-          os << e->getName();
+          os << e->getName() << '\n';
         }
       });
     }else{

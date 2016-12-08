@@ -44,7 +44,12 @@ int main(int argc, const char * argv[]) {
   std::cout << "Next task is ";
   p1.display_next_task(std::cout);
   print_dash();
+  p1.run();
+  print_dash();
+  std::cout << "Last task was ";
+  p1.display_last_task(std::cout);
+  print_dash();
   std::cout << "Completed tasks so far...\n";
   print_dash();
-  p1.display_completed_tasks(std::cout) << '\n';
+  p1.display_completed_tasks(std::cout);
 }
