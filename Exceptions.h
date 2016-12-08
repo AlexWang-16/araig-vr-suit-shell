@@ -19,9 +19,10 @@ namespace ARAIG{
   struct Exceptions: public std::exception {
     std::string msg_;
     std::string filename_;
+    int code_;
     const char* what() const throw();
-    Exceptions(std::string msg);
-    Exceptions(std::string msg, std::string filename);
+    Exceptions(std::string msg, int code);
+    Exceptions(std::string msg, const char* filename, int code);
   };
 
 }

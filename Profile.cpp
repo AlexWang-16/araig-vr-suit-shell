@@ -14,24 +14,19 @@
 #include "Stimulation.h"
 namespace ARAIG{
   
-  Profile::Profile (std::string filename, std::ostream& os, ARAIG_sensors& as){
-    //Constructor
+  Profile::Profile (const char* filename, std::ofstream& os, ARAIG_sensors& as){
     
-    /*TODO:
-     1) Open file - OK
-     2) Check for errors and throw exception - OK
-     3) Begin reading - WORKING ON
-     4) Begin storing the data
-     */
     std::ifstream f (filename);
     try{
-      if (!f){
-        throw Exceptions ("Error: Cannot open ", filename);
+      if (!filename){
+        throw Exceptions ("Error: Invalid Profile configuration filename. Check your parameters.\n", 2);
+      }else if (!f){
+        throw Exceptions ("Error: Cannot open ", filename, 3);
       }
     }catch (Exceptions& e){
       std::cerr << e.what() <<'\n';
       std::cerr.flush();
-      exit(2);
+      exit(e.code_);
     }
     
     //variables
@@ -44,47 +39,50 @@ namespace ARAIG{
     
     try {
       if (result.size() != 3){
-        throw Exceptions ("Error: File data corruption. Incorrect instructor or student data format.");
+        throw Exceptions ("Error: File data corruption. Incorrect instructor or student data format.", 4);
       }
     }catch (Exceptions& e){
       std::cerr << e.what() << '\n';
       std::cerr.flush();
-      exit(3);
+      exit(e.code_);
     }
     studentFName_ = result[0];
     studentLName_ = result[1];
     studentNum_ = result[2];
+    //TODO: Write student data to file
     
     //Get instructor data
     ARAIG::skip_blank_lines(f, result);
     try{
       if (result.size() != 3){
-        throw Exceptions ("Error: File data corruption. Incorrect instructor or student data format.");
+        throw Exceptions ("Error: File data corruption. Incorrect instructor or student data format.", 4);
       }
     }catch (Exceptions& e){
       std::cerr << e.what() << '\n';
       std::cerr.flush();
-      exit(3);
+      exit(e.code_);
     }
     
     instructorFname_ = result[0];
     instructorLName_ = result[1];
     instructorNum_ = result[2];
+    //TODO: Write instructor data to file
     
     //Get Calibration data
     ARAIG::skip_blank_lines(f, result);
     try{
       if (result.size() != 2){
-        throw Exceptions("Error: File data corruption. Missing Student calibration data.");
+        throw Exceptions("Error: File data corruption. Missing Student calibration data.", 4);
       }
     }catch (Exceptions& e){
       std::cerr << e.what() << '\n';
       std::cerr.flush();
-      exit(3);
+      exit(e.code_);
     }
     
     calMax_ = std::stoi(result[0]);
     calMin_ = std::stoi(result[1]);
+    //TODO:Write calibration data to file
     
     while (!f.fail()){
       ARAIG::skip_blank_lines(f, result);

@@ -20,7 +20,7 @@ namespace ARAIG {
     std::list<Task*> task_list_;
     Task dummy;
   public:
-    ARAIG_sensors (std::string stims_filename, std::string tasks_filename);
+    ARAIG_sensors (const char* stims_filename, const char* tasks_filename);
     ~ARAIG_sensors();
     long getTaskSize();
     Task& getTask(int index);

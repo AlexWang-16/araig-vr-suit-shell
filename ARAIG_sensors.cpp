@@ -17,19 +17,24 @@
 
 namespace ARAIG {
 
-  ARAIG_sensors::ARAIG_sensors(std::string stims_filename, std::string tasks_filename){
+  ARAIG_sensors::ARAIG_sensors(const char* stims_filename, const char* tasks_filename){
     
     std::ifstream f (stims_filename);
     try {
-      if(!f){
-        throw Exceptions ("Error: Cannot open ", stims_filename);
+      if (!stims_filename){
+        throw Exceptions("Error: Invalid stimulation configuration filename. Check your parameters.\n", 2);
+      }else if (!tasks_filename){
+        throw Exceptions("Error: Invalid Task configuration filename. Check your parameters.", 2);
+      }else if(!f){
+        throw Exceptions ("Error: Cannot open ", stims_filename, 3);
       }
     }catch (Exceptions& e){
       std::cerr << e.what() <<'\n';
       std::cerr.flush();
-      exit(2);
+      exit(e.code_);
     }
     
+    //Variables
     std::string data, type, name, location, header, err_msg;
     int intensity, frequency, duration, index = 0;
     std::vector<std::string> result, errors;
@@ -59,12 +64,12 @@ namespace ARAIG {
     f.open (tasks_filename);
     try {
       if(!f.is_open()){
-        throw Exceptions ("Error: Cannot open ", tasks_filename);
+        throw Exceptions ("Error: Cannot open ", tasks_filename, 3);
       }
     }catch (Exceptions& e){
       std::cerr << e.what() <<'\n';
       std::cerr.flush();
-      exit(2);
+      exit(e.code_);
     }
     
     result.clear();

@@ -81,12 +81,12 @@ namespace ARAIG {
     
     try{
       if (!name.length()){
-        throw Exceptions  ("Error: Empty Stimulation name detected. File may be corrupted. \nPlease ensure data conforms to format: exoskeleton <simulation name> intensity, duration.");
+        throw Exceptions  ("Error: Empty Stimulation name detected. File may be corrupted. \nPlease ensure data conforms to format: exoskeleton <simulation name> intensity, duration.", 4);
       }
     } catch (Exceptions& e){
       std::cerr << e.what() << '\n';
       std::cerr.flush();
-      exit(3);
+      exit(e.code_);
     }
     
     if (intensity > 0 && intensity <= max_intensity){

@@ -22,7 +22,7 @@ class Profile{
   std::vector<Task*>ToRun_;
   std::vector<Task*>Completed_;
 public:
-  Profile (std::string filename, std::ostream& os, ARAIG_sensors& as);
+  Profile (const char* filename, std::ofstream& os, ARAIG_sensors& as);
   
   void run();
   //Display all tasks to the screen

@@ -26,30 +26,33 @@ const void new_line(int x = 1) {
 
 int main(int argc, const char * argv[]) {
   
-  //TODO: Main needs to take in 4 command line arguments!
+  try{
+    if (argc != 5 ){
+      throw Exceptions ("Error: Incorrect number of arguments.\nArguments format: Stimulation configuration filename, Task configuration filename, Profile configuration filename, Output filename\n", 1);
+    }
+  } catch (Exceptions& e) {
+    std::cerr << e.what() << '\n';
+    std::cerr.flush();
+    exit (e.code_);
+  }
   
-  //TODO: Main nneeds to open ostream using output file provided!
+  //StimulationConfig.csv
+  std::ofstream of (argv[4], std::ios::trunc);
+  //TODO: Some form of file open check for ofstream
+  try{
+    if(!argv[4]){
+      throw Exceptions ("Error: Invalid output filename. Check your parameters.\n", 2);
+    }else if (!of){
+      throw Exceptions ("Error: Cannot open or create " + std::string(argv[4]) + ". Check permissions for executable file and directory to ensure writing is possible.\n", 5);
+    }
+  }catch (Exceptions& e){
+    std::cerr << e.what() << '\n';
+    std::cerr.flush();
+    exit (e.code_);
+  }
   
-  ARAIG_sensors alpha ("StimulationConfig.csv", "TaskConfiguration.csv");
+  ARAIG_sensors alpha (argv[1], argv[2]);
+  Profile p1 (argv[3], of, alpha);
   
-  Profile p1 ("SampleProfileConfiguration.csv", std::cout, alpha);
-  p1.display_todo_tasks(std::cout);
-  print_dash();
-  std::cout << "Next Task is ";
-  p1.display_next_task(std::cout);
-  print_dash();
   p1.run();
-  print_dash();
-  std::cout << "1 cycle complete!\n";
-  std::cout << "Next task is ";
-  p1.display_next_task(std::cout);
-  print_dash();
-  p1.run();
-  print_dash();
-  std::cout << "Last task was ";
-  p1.display_last_task(std::cout);
-  print_dash();
-  std::cout << "Completed tasks so far...\n";
-  print_dash();
-  p1.display_completed_tasks(std::cout);
 }

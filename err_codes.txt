@@ -6,7 +6,9 @@ Format: Code - Message
 
 Argument error:
 1 - Incorrect number of arguments
+2 - Argument is invalid (ie: nullptr)
 
 File error
-2 - Cannot open (filename)
-3 - Data corruption. Unexpected data format.
+3 - Cannot open (filename)
+4 - Data corruption. Unexpected data format
+5 - Cannot create new file for writing
