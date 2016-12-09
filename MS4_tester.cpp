@@ -16,14 +16,6 @@
 using namespace ARAIG;
 extern const int max_duration, max_intensity;
 
-const void new_line(int x = 1) {
-  //Prints i number of newline characters
-  for (int i = 0; i < x; i++){
-    std::cout << '\n';
-  }
-}
-
-
 int main(int argc, const char * argv[]) {
   
   try{
