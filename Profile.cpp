@@ -148,7 +148,7 @@ namespace ARAIG{
     
     long user_input = -1;
     do {
-      user_input = getInput("Please enter menu item number: ", 1, menu_.size(), menu_.size(), true);
+      user_input = getInput("Please enter menu item number: ", 1, menu_.size(), true);
       switch (user_input){
         case 1:
           //Execute tasks
@@ -237,15 +237,18 @@ namespace ARAIG{
     return options;
   }
   
-  long Profile::getInput(std::string prompt, int min, long max, long exitCode, bool menuPrompt){
+  long Profile::getInput(std::string prompt, int min, long max, bool menuPrompt){
     //Return sanitized user input for menu
     
-    long user_input = 0;
+    long user_input = 0, exitCode = 0;
     bool bad = true;
     std::string err = "\nError: Invalid input. Please check input and try again.\n\n";
     
     do {
-      if (menuPrompt){ max = show_menu(); }
+      if (menuPrompt){
+        max = show_menu();
+        exitCode = menu_.size();
+      }
       std::cout << prompt;
       std::cin >> user_input;
 

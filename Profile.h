@@ -33,7 +33,7 @@ public:
   void execute (long tasks);
   void load_menu();
   long show_menu()const;
-  long getInput(std::string prompt, int min, long max, long exitCode = 0, bool menuPrompt = false);
+  long getInput(std::string prompt, int min, long max, bool menuPrompt = false);
   //Display all tasks to the screen
   std::ostream& display_todo_tasks (std::ostream& os) const;
   //Display completed tasks to the screen
