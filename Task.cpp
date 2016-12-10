@@ -115,10 +115,7 @@ namespace ARAIG{
   
   std::ostream& Task::execute(std::ostream& os)const{
     //Print details of all stimulations inside a task. Will require iterator
-
-    for (Stimulation* element : task_list_){
-      element->display(os) << '\n';
-    }
+    for (Stimulation* element : task_list_){ element->display(os) << '\n'; }
     return os;
   }
 }

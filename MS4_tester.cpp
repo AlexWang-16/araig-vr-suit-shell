@@ -12,7 +12,7 @@
 #include "Exoskeleton.h"
 #include "Task.h"
 #include "ARAIG_sensors.h"
-#include "profile.h"
+#include "Profile.h"
 using namespace ARAIG;
 extern const int max_duration, max_intensity;
 
@@ -20,7 +20,7 @@ int main(int argc, const char * argv[]) {
   
   try{
     if (argc != 5 ){
-      throw Exceptions ("Error: Incorrect number of arguments.\nArguments format: Stimulation configuration filename, Task configuration filename, Profile configuration filename, Output filename\n", 1);
+      throw Exceptions ("Error: Incorrect number of arguments.\nFormat: Stimulation config filename, Task config filename, Profile config filename, Output filename\n", 1);
     }
   } catch (Exceptions& e) {
     std::cerr << e.what() << '\n';

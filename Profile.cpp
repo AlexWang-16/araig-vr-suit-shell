@@ -30,8 +30,7 @@ namespace ARAIG{
     }
     
     //variables
-    int index = 0;
-    long max_index = as.getTaskSize();
+    std::string key;
     std::vector<std::string>result, errors;
     
     //Get student data
@@ -100,13 +99,9 @@ namespace ARAIG{
       
       if (result[0] != " "){
         //I've read in a proper task
-        index = std::stoi(result[0].substr(4));
-        if (index < 0){
-          errors.push_back(std::string("Error: Task" + std::to_string(index) + " does not conform to Task name format. Task name format: Task# (where # > 0)."));
-        }else if (index > max_index){
-          errors.push_back (std::string("Error: Task requested does not exist. Skipping Task" + std::to_string(index) + "."));
-        }else{
-          ToRun_.push_back(new Task (as.getTask(index + 1)));
+        key = result[0];
+        if (as.taskExists(key)){
+          ToRun_.push_back(new Task (as.getTask(key)));
         }
       }
     }
@@ -138,11 +133,12 @@ namespace ARAIG{
   
   void Profile::run(){
     //Execute the next task in ToRun container
+    new_line(40);
     std::cout.setf(std::ios::fixed);
     std::cout.precision(2);
     std::cout << "ARAIG Control Flight Simulator v" << version << "\n\n";
     std::cout.unsetf(std::ios::fixed);
-    std::cout << "Status: Flight plan data successfully loaded.\n\n";
+    std::cout << "Flight plan data successfully loaded.\n\n";
     
     load_menu();
     
@@ -154,38 +150,50 @@ namespace ARAIG{
           //Execute tasks
         {
           if (ToRun_.size() > 0){
+            new_line(40);
             std::cout << "\nYou currently have " << ToRun_.size() << " tasks to execute.\n";
             long numOfTasks = getInput("Please enter number of tasks to execute: ", 0, ToRun_.size());
             execute(numOfTasks);
             if (numOfTasks == 1){
-              std::cout << '\n' << numOfTasks << " task executed.\n\n";
+              new_line(40);
+              std::cout << '\n' << numOfTasks << " task executed. Executed task was logged in output file.";
+              new_line(4);
             }else if (numOfTasks > 1){
-              std::cout << '\n' << numOfTasks << " tasks were executed.\n\n";
+              new_line(40);
+              std::cout << '\n' << numOfTasks << " tasks were executed. Executed tasks were logged in output file.";
+              new_line(4);
             }
           }else{
-            std::cout << "\nThere are no more tasks to run.\n\n";
+            new_line(40);
+            std::cout << "\nThere are no more tasks to run.";
+            new_line(4);
           }
         }
           break;
         case 2:
           //Display next task
+          new_line(40);
           display_next_task(std::cout) << '\n';
           break;
         case 3:
           //Display All todo tasks
+          new_line(40);
           display_todo_tasks(std::cout) << '\n';
           break;
         case 4:
           //Display last task completed
+          new_line(40);
           display_last_task(std::cout) <<
           '\n';
           break;
         case 5:
           //Display All tasks completed
+          new_line(40);
           display_completed_tasks(std::cout) << '\n';
           break;
         case 6:
           //Exit Program
+          new_line(40);
           std::cout.setf(std::ios::fixed);
           std::cout.precision(2);
           std::cout << "\nThanks for using ARAIG Control Flight Simulator v" << version;
@@ -204,11 +212,13 @@ namespace ARAIG{
         of_ << ToRun_[0]->getName() << '\n';
         ToRun_[0]->execute(of_);
         of_ << '\n';
-          Completed_.push_back(std::move(ToRun_[0]));
+          Completed_.push_back(new Task(std::move(*ToRun_[0])));
           ToRun_.erase(ToRun_.begin());
       }
     }else if (tasks == 0){
-      std::cout << "\nTask execution cancelled.\n\n";
+      new_line(40);
+      std::cout << "Task execution cancelled.";
+      new_line(4);
     }
   }
   
@@ -242,7 +252,7 @@ namespace ARAIG{
     
     long user_input = 0, exitCode = 0;
     bool bad = true;
-    std::string err = "\nError: Invalid input. Please check input and try again.\n\n";
+    std::string err = "Error: Invalid input. Please check input and try again.";
     
     do {
       if (menuPrompt){
@@ -253,12 +263,16 @@ namespace ARAIG{
       std::cin >> user_input;
 
       if (std::cin.fail()){
+        new_line(40);
         std::cerr << err;
+        new_line(4);
         std::cin.clear();
       }else if (user_input == exitCode){
         bad = false;
       }else if (user_input < min || user_input > max){
+        new_line(40);
         std::cerr << err;
+        new_line(4);
       }else{
         bad = false;
       }
@@ -270,16 +284,19 @@ namespace ARAIG{
   std::ostream& Profile::display_todo_tasks(std::ostream& os)const{
     //Display all tasks in ToRun container
     if(ToRun_.size() > 0){
+      new_line(40);
       std::cout << "\nTasks to be completed\n";
-      print_dash(21);
+      print_dash(29);
       for_each(ToRun_.begin(), ToRun_.end(), [&](Task* e){
         if (e != nullptr){
           os << e->getName() <<'\n';
         }
       });
+      new_line(2);
     }else{
       std::cerr << "There are no tasks to be performed in the task list.\n";
       std::cerr.flush();
+      new_line(4);
     }
     return os;
   }
@@ -287,16 +304,19 @@ namespace ARAIG{
   std::ostream& Profile::display_completed_tasks(std::ostream& os) const{
     //Display all completed tasks on screen
     if (Completed_.size()>0){
-      std::cout << "\nCompleted Tasks\n";
-      print_dash(15);
+      new_line(40);
+      std::cout << "Completed Tasks\n";
+      print_dash(23);
       
       for_each(Completed_.begin(), Completed_.end(), [&](Task* e) {
         if (e != nullptr){
           os << e->getName() << '\n';
         }
       });
+      new_line(2);
     }else{
-      std::cerr << "There are no completed tasks. No tasks has been executed.\n";
+      std::cerr << "There are no completed tasks. No tasks has been executed.";
+      new_line(4);
       std::cerr.flush();
     }
     return os;
@@ -306,9 +326,12 @@ namespace ARAIG{
     //Display next task to the screen
     if (ToRun_.size() > 0){
       os << "\nThe next task is ";
-      os << ToRun_[0]->getName() << ".\n";
+      os << ToRun_[0]->getName() << '.';
+      new_line(3);
     }else{
-      os << "There is no task to be executed next.\n";
+      new_line(40);
+      os << "There is no task to be executed next.";
+      new_line(3);
     }
     return os;
   }

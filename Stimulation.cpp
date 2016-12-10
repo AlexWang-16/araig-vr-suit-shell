@@ -56,7 +56,7 @@ namespace ARAIG {
       }
     }
     value.clear();
-    return std::move(temp);
+    return temp;
   }
   
   void skip_blank_lines(std::ifstream& file, std::vector<std::string>& result){

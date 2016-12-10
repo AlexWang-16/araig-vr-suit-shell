@@ -16,14 +16,15 @@
 #include "Task.h"
 namespace ARAIG {
   class ARAIG_sensors{
-    std::vector<Stimulation*> stim_list_;
-    std::list<Task*> task_list_;
+    std::map<std::string, Stimulation*> stim_list_;
+    std::map<std::string, Task*> task_list_;
     Task dummy;
   public:
     ARAIG_sensors (const char* stims_filename, const char* tasks_filename);
     ~ARAIG_sensors();
     long getTaskSize();
-    Task& getTask(int index);
+    bool taskExists(std::string index);
+    Task& getTask(std::string key);
     std::ostream& dump(std::ostream& os);
   };
 }

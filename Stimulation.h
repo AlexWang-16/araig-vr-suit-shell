@@ -12,7 +12,7 @@
 #include <limits>
 #include <list>
 #include <vector>
-#include <deque>
+#include <map>
 #include <memory>
 #include <iterator>
 #include <fstream>
@@ -21,7 +21,7 @@
 #include <limits>
 #include "Exceptions.h"
 namespace ARAIG {
-  const float version = 0.9;
+  const float version = 0.94;
   const int duration_max = 300;
   const int intensity_max = 100, frequency_max = 10000;
   std::vector<std::string> split(std::string str, char delim = ' ');

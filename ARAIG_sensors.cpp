@@ -35,8 +35,8 @@ namespace ARAIG {
     }
     
     //Variables
-    std::string data, type, name, location, header, err_msg;
-    int intensity, frequency, duration, index = 0;
+    std::string data, type, name, location, header, key, err_msg;
+    int intensity, frequency, duration;
     std::vector<std::string> result, errors;
     Task* temp_task = nullptr;
   
@@ -50,13 +50,13 @@ namespace ARAIG {
         intensity = stoi(result[3]);
         frequency = stoi(result[4]);
         duration = stoi(result[5]);
-        stim_list_.push_back(new Stims(name, location, intensity, frequency, duration));
+        stim_list_[name] = new Stims(name, location, intensity, frequency, duration);
         
       } else if (type == "exoskeleton") {
         name = result[1];
         intensity = stoi(result[2]);
         duration = stoi(result[3]);
-        stim_list_.push_back(new Exoskeleton(name, intensity, duration));
+        stim_list_[name] = new Exoskeleton(name, intensity, duration);
       }
     }
     f.close();
@@ -84,7 +84,7 @@ namespace ARAIG {
         
         if (temp_task && temp_task->getSize() > 0){
           //A task has completed, push it into the list!
-          task_list_.push_back(std::move(temp_task));
+          task_list_[temp_task->getName()] = std::move(temp_task);
           temp_task = nullptr;
         }
         
@@ -94,34 +94,16 @@ namespace ARAIG {
         
       } else if (header == "Sim") {
         //Detect Stimulation number and grab it from the vector
-        index = stoi(result[0].substr(3));
-        
-        if (index < 1 ){
-          //Check for out of lower bound index
-          err_msg = "Error: Cannot add Sim" + std::to_string(index);
-          err_msg += ". Sim name format: Sim# (where # > 0).\n";
-          errors.push_back(err_msg);
-          err_msg.clear();
+        key = result[0];
+        if (stim_list_.find(key) != stim_list_.end()){
+            *temp_task += stim_list_[key];
+        }else{
+            errors.push_back (std::string("Error: No task instantiated to accept the Stimulation. Skipping " + key + ".\n"));
         }
-        else if (index > stim_list_.size()){
-          //Check for out of upper bound index
-          err_msg = "Error: Cannot add Sim" + std::to_string(index);
-          err_msg += " to " + temp_task->getName();
-          err_msg += ". Stimulation not found.\n";
-          errors.push_back(err_msg);
-          err_msg.clear();
-        } else if (stim_list_[index-1]->getName() == result[0]){
-          //Final comparison check
-          if (temp_task){
-            *temp_task += stim_list_[index-1];
-          }else{
-            errors.push_back (std::string("Error: No task instantiated to accept the Stimulation. Skipping Sim" + std::to_string(index) + ".\n"));
-          }
       }
     }
-  }
   //Final push and house cleaning
-  task_list_.push_back(temp_task);
+  task_list_[temp_task->getName()] = temp_task;
   temp_task = nullptr;
   
   if (errors.size()){
@@ -141,25 +123,30 @@ namespace ARAIG {
     return task_list_.size();
   }
   
-  Task& ARAIG_sensors::getTask(int index){
-    if (index < task_list_.size()){
-      std::list<Task*>::iterator it = task_list_.begin();
-      std::advance(it, index);
-      return *(*it);
-    } else {
-      return dummy;
+  Task& ARAIG_sensors::getTask(std::string key){
+    
+    std::map<std::string, Task*>::iterator it = task_list_.find(key);
+    if (taskExists(key)){
+      return *it->second;
     }
+    return dummy;
+  }
+  
+  bool ARAIG_sensors::taskExists(std::string key){
+    //return true if tasks exists
+    std::map<std::string, Task*>::iterator i = task_list_.find(key);
+    return (i != task_list_.end());
   }
   
   std::ostream& ARAIG_sensors::dump (std::ostream& os) {
     //Iterate through the entire list and run dump and execute()
 
-    std::for_each(task_list_.begin(), task_list_.end(), [&](Task* i){
-      if (i){
-        i->dump(std::cout);
-        std::cout << '\n';
-        i->execute(std::cout);
-          std::cout << '\n';
+    std::for_each(task_list_.begin(), task_list_.end(), [&](std::pair<const std::string, Task*> i){
+      if (i.second){
+        i.second -> dump(os);
+        os << '\n';
+        i.second ->execute(os);
+          os << '\n';
       }
     });
     return os;
