@@ -17,9 +17,40 @@
 namespace ARAIG{
   extern const float version;
 class Profile{
-  std::string studentFName_, studentLName_, studentNum_;
-  std::string instructorFname_, instructorLName_, instructorNum_;
-  int calMax_, calMin_;
+  class Student{
+    std::string FName_,
+                LName_,
+                Num_;
+    int calMin_ = 0, calMax_ = 0;
+  public:
+    Student() = delete;
+    Student(std::string firstName, std::string lastName, std::string studentNum);
+    virtual ~Student();
+    void setCalMax (std::string input);
+    void setCalMin (std::string input);
+    std::string getFName()const;
+    std::string getLName()const;
+    std::string getName()const;
+    std::string getNumber()const;
+    void writeData(std::ofstream& of);
+    void writeCalibration(std::ofstream& of);
+  };
+  
+  class Instructor{
+    std::string FName_,
+                LName_,
+                Num_;
+  public:
+    Instructor() = delete;
+    Instructor(std::string firstName, std::string lastName, std::string EmployeeNum);
+    ~Instructor();
+    std::string getFName()const;
+    std::string getLName()const;
+    std::string getName()const;
+    std::string getNumber()const;
+    void writeToFile(std::ofstream& of);
+  };
+  
   std::vector<Task*>ToRun_;
   std::vector<Task*>Completed_;
   std::vector<std::string>menu_;

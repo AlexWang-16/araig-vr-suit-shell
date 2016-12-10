@@ -22,6 +22,7 @@ namespace ARAIG {
     } catch (Exceptions& e){
       std::cerr << e.what() << '\n';
       std::cerr.flush();
+      new_line(user_interface_system_message_skip_line / 2);
       exit(e.code_);
     }
     

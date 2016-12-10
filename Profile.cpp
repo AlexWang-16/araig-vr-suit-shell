@@ -13,8 +13,118 @@
 #include "Profile.h"
 #include "ARAIG_sensors.h"
 namespace ARAIG{
+  Profile::Student::Student(std::string FName, std::string LName,
+                            std::string studentNumber):FName_(FName),
+                            LName_(LName), Num_(studentNumber){
+    if(FName.length() < 1){
+      throw Exceptions("Error: Student first name is empty.", 3);
+    }else if (LName.length() < 1){
+      throw Exceptions("Error: Student last name is empty.", 3);
+    }else if (std::stoi(studentNumber) == 0){
+      throw Exceptions("Error: Student number is invalid.", 3);
+    }else if (std::stoi(studentNumber) < 0) {
+      throw Exceptions("Error: Student number cannot be negative.", 3);
+    }
+  }
   
-  Profile::Profile (const char* filename, std::ofstream& os, ARAIG_sensors& as): of_(os){
+  Profile::Student::~Student(){
+    FName_.clear();
+    LName_.clear();
+    Num_.clear();
+    calMin_ = 0;
+    calMax_ = 0;
+  }
+  
+  std::string Profile::Student::getFName()const{
+    return FName_;
+  }
+  
+  std::string Profile::Student::getLName()const{
+    return LName_;
+  }
+  
+  std::string Profile::Student::getName()const{
+    return (FName_ + ' ' + LName_);
+  }
+  
+  std::string Profile::Student::getNumber()const{
+    return Num_;
+  }
+  
+  void Profile::Student::writeData(std::ofstream& of){
+    of << "Student:     " << getName();
+    of << " - " << getNumber() <<'\n';
+  }
+  
+  void Profile::Student::writeCalibration(std::ofstream& of){
+    of << "Student Calibration:\n";
+    of << "MAX = " << calMax_ << '\n';
+    of << "MIN = " << calMin_ << '\n';
+  }
+  
+  void Profile::Student::setCalMax(std::string input){
+    int intensity = std::stoi(input);
+    
+    if (intensity == 0){
+      throw Exceptions("Error: Invalid calibration max intensity.", 3);
+    }else if (intensity > 100){ calMax_ = 100; }
+    else if (intensity < 0 ) { calMax_ = 0;}
+    else{ calMax_ = intensity; }
+  }
+  
+  void Profile::Student::setCalMin(std::string input){
+    int intensity = std::stoi(input);
+    
+    if (intensity == 0){
+      throw Exceptions("Error: Invalid calibration min intensity.", 3);
+    }else if (intensity > 100){ calMin_ = 100; }
+    else if (intensity < 0 ) { calMin_ = 0;}
+    else{ calMin_ = intensity; }
+  }
+  
+  Profile::Instructor::Instructor(std::string FName, std::string LName,
+                                  std::string EmployeeNum): FName_(FName),
+                                  LName_(LName), Num_(EmployeeNum){
+    if(FName.length() < 1){
+      throw Exceptions("Error: Instructor first name is empty.", 3);
+    }else if (LName.length() < 1){
+      throw Exceptions("Error: Instructor last name is empty.", 3);
+    }else if (std::stoi(EmployeeNum) == 0){
+      throw Exceptions("Error: Instructor number is invalid.", 3);
+    }else if (std::stoi(EmployeeNum) < 0) {
+      throw Exceptions("Error: Instructor number cannot be negative.", 3);
+    }
+  }
+  
+  Profile::Instructor::~Instructor(){
+    FName_.clear();
+    LName_.clear();
+    Num_.clear();
+  }
+  
+  std::string Profile::Instructor::getFName()const{
+    return FName_;
+  }
+  
+  std::string Profile::Instructor::getLName()const{
+    return LName_;
+  }
+  
+  std::string Profile::Instructor::getName()const{
+    return (FName_ + ' ' + LName_);
+  }
+  
+  std::string Profile::Instructor::getNumber()const{
+    return Num_;
+  }
+  
+  void Profile::Instructor::writeToFile(std::ofstream& of){
+    of << "Instructor:  " << getName();
+    of << " - " << getNumber() <<'\n';
+  }
+  
+  Profile::Profile (const char* filename, std::ofstream& os, ARAIG_sensors& as):
+  of_(os){
     
     std::ifstream f (filename);
     try{
@@ -25,6 +135,7 @@ namespace ARAIG{
       }
     }catch (Exceptions& e){
       std::cerr << e.what() <<'\n';
+      new_line(user_interface_system_message_skip_line / 2);
       std::cerr.flush();
       exit(e.code_);
     }
@@ -32,7 +143,8 @@ namespace ARAIG{
     //variables
     std::string key;
     std::vector<std::string>result, errors;
-    
+    Student* tempStudent;
+    Instructor* tempInstructor;
     //Get student data
     skip_blank_lines(f, result);
     
@@ -40,18 +152,16 @@ namespace ARAIG{
       if (result.size() != 3){
         throw Exceptions ("Error: File data corruption. Incorrect instructor or student data format.", 4);
       }
+      tempStudent = new Student (result[0], result[1], result[2]);
     }catch (Exceptions& e){
       std::cerr << e.what() << '\n';
+      new_line(user_interface_system_message_skip_line / 2);
       std::cerr.flush();
       exit(e.code_);
     }
-    studentFName_ = result[0];
-    studentLName_ = result[1];
-    studentNum_ = result[2];
     
     //Writing student data to file
-    of_ << "Student: " << studentFName_ << ' ';
-    of_ << studentLName_ << "  - " << studentNum_ <<'\n';
+    tempStudent->writeData(of_);
     
     //Get instructor data
     ARAIG::skip_blank_lines(f, result);
@@ -62,17 +172,21 @@ namespace ARAIG{
     }catch (Exceptions& e){
       std::cerr << e.what() << '\n';
       std::cerr.flush();
+      new_line(user_interface_system_message_skip_line / 2);
       exit(e.code_);
     }
     
-    instructorFname_ = result[0];
-    instructorLName_ = result[1];
-    instructorNum_ = result[2];
+    try{
+      tempInstructor = new Instructor (result[0], result[1], result[2]);
+    }catch (Exceptions& e){
+      std::cerr << e.what();
+      new_line(user_interface_system_message_skip_line / 2);
+      std::cerr.flush();
+      exit(e.code_);
+    }
     
     //Writing instructor data to file
-    of_ << "Instructor: " << instructorFname_;
-    of_ << ' ' << instructorLName_ << " - ";
-    of_ << instructorNum_ << '\n';
+    tempInstructor->writeToFile(of_);
     
     //Get Calibration data
     ARAIG::skip_blank_lines(f, result);
@@ -82,17 +196,23 @@ namespace ARAIG{
       }
     }catch (Exceptions& e){
       std::cerr << e.what() << '\n';
+      new_line(user_interface_system_message_skip_line / 2);
       std::cerr.flush();
       exit(e.code_);
     }
     
-    calMax_ = std::stoi(result[0]);
-    calMin_ = std::stoi(result[1]);
+    try{
+      tempStudent->setCalMax(result[0]);
+      tempStudent->setCalMin(result[1]);
+    }catch (Exceptions& e){
+      std::cerr << e.what();
+      new_line(user_interface_skip_screen);
+      std::cerr.flush();
+      exit(e.code_);
+    }
     
     //Writing calibration data to file
-    of_ << "Student Calibration:\n";
-    of_ << "MAX = " << calMax_ << '\n';
-    of_ << "MIN = " << calMin_ << '\n';
+    tempStudent->writeCalibration(of_);
     
     while (!f.fail()){
       ARAIG::skip_blank_lines(f, result);
@@ -106,6 +226,11 @@ namespace ARAIG{
       }
     }
     
+    delete tempStudent;
+    tempStudent = nullptr;
+    delete tempInstructor;
+    tempInstructor = nullptr;
+    
     f.close();
     if (errors.size() > 0){
       for_each(errors.begin(), errors.end(), [](std::string msg) {
@@ -113,20 +238,12 @@ namespace ARAIG{
       });
       errors.clear();
     }
+    
   }
   
   Profile::~Profile(){
-    //TODO: Restructor this when instructor and student struct have been created. They will have their own destructors written to streamline this process
     ToRun_.clear();
     Completed_.clear();
-    calMax_ = 0;
-    calMin_ = 0;
-    studentFName_.clear();
-    studentLName_.clear();
-    studentNum_.clear();
-    instructorFname_.clear();
-    instructorLName_.clear();
-    instructorNum_.clear();
     menu_.clear();
     of_.close();
   }

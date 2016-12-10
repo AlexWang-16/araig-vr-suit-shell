@@ -24,6 +24,7 @@ int main(int argc, const char * argv[]) {
     }
   } catch (Exceptions& e) {
     std::cerr << e.what() << '\n';
+    new_line(user_interface_system_message_skip_line / 2);
     std::cerr.flush();
     exit (e.code_);
   }
@@ -39,6 +40,7 @@ int main(int argc, const char * argv[]) {
     }
   }catch (Exceptions& e){
     std::cerr << e.what() << '\n';
+    new_line(user_interface_system_message_skip_line / 2);
     std::cerr.flush();
     exit (e.code_);
   }
