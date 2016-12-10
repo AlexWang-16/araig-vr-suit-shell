@@ -95,7 +95,7 @@ namespace ARAIG {
       } else if (header == "Sim") {
         //Detect Stimulation number and grab it from the vector
         key = result[0];
-        if (stim_list_.find(key) != stim_list_.end()){
+        if (temp_task && stim_list_.find(key) != stim_list_.end()){
             *temp_task += stim_list_[key];
         }else{
             errors.push_back (std::string("Error: No task instantiated to accept the Stimulation. Skipping " + key + ".\n"));
@@ -103,7 +103,7 @@ namespace ARAIG {
       }
     }
   //Final push and house cleaning
-  task_list_[temp_task->getName()] = temp_task;
+    if (temp_task){task_list_[temp_task->getName()] = temp_task;}
   temp_task = nullptr;
   
   if (errors.size()){

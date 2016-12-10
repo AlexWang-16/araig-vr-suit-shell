@@ -30,7 +30,7 @@ public:
   virtual ~Profile();
   void run();
   //Executes specified number of tasks user specifies
-  void execute (long tasks);
+  void execute (unsigned long tasks);
   void load_menu();
   long show_menu()const;
   long getInput(std::string prompt, int min, long max, bool menuPrompt = false);
