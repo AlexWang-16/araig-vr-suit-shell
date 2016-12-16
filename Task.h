@@ -26,7 +26,7 @@ namespace ARAIG{
     Task (Task&& src);
     virtual ~Task();
     Task& operator=(const Task& src);
-    Task& operator=(Task&& src);
+    Task&& operator=(Task&& src);
     void copy(std::string name, std::list<Stimulation*>task_list);
     void operator+=(Stimulation* ptr);
     Stimulation* operator[] (unsigned int i)const;

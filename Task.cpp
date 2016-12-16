@@ -49,7 +49,7 @@ namespace ARAIG{
     return *this;
   }
   
-  Task& Task::operator=(Task&& src){
+  Task&& Task::operator=(Task&& src){
     if (this != &src){
       name_ = src.name_;
       task_list_.clear();
@@ -58,7 +58,7 @@ namespace ARAIG{
       src.name_.clear();
       src.task_list_.clear();
     }
-    return *this;
+    return std::move(*this);
   }
   
   void Task::operator+=(Stimulation* ptr){
