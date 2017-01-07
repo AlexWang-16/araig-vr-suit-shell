@@ -31,7 +31,7 @@ int main(int argc, const char * argv[]) {
   
   //StimulationConfig.csv
   std::ofstream of (argv[4], std::ios::trunc);
-  //TODO: Some form of file open check for ofstream
+  //File open check for ofstream
   try{
     if(!argv[4]){
       throw Exceptions ("Error: Invalid output filename. Check your parameters.\n", 2);

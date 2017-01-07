@@ -24,9 +24,10 @@
 #include <string>
 #include <algorithm>
 #include <limits>
+
 namespace ARAIG {
 //Version tracking (Profile.cpp)
-const float version = 0.95;
+const float version = 0.96;
 
 //Stimulation Configurations (Stimulations.h)
 const int duration_max = 300;

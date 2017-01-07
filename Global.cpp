@@ -32,7 +32,7 @@ namespace ARAIG {
     }), str.end());
     
     if (str.length() == 0){
-      //Let the vector return 1 element of an empty string with 1 space to signal an empty space. ARAIG_sensors constructor will handle note that it is not a Stimulation or task and skip it.
+      //Let the vector return 1 element of an empty string with 1 space to signal an empty space. ARAIG_sensors constructor will note that it is not a Stimulation or task and skip it.
       str =" ";
       temp.push_back(str);
     }

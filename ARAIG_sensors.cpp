@@ -39,6 +39,7 @@ namespace ARAIG {
     std::string data, type, name, location, header, key, err_msg;
     int intensity, frequency, duration;
     std::vector<std::string> result, errors;
+    std::shared_ptr<Stimulation> stim;
     Task* temp_task = nullptr;
   
     while (!f.fail()){
@@ -51,13 +52,20 @@ namespace ARAIG {
         intensity = stoi(result[3]);
         frequency = stoi(result[4]);
         duration = stoi(result[5]);
-        stim_list_[name] = new Stims(name, location, intensity, frequency, duration);
+        //Stim shared pointer
+        stim.reset();
+        stim = std::make_shared<Stims>(name, location, intensity, frequency, duration);
+        stim_list_.insert(std::pair<std::string, std::shared_ptr<Stimulation>>(name, stim));
+        //stim_list_[name] = new Stims(name, location, intensity, frequency, duration);
         
       } else if (type == "exoskeleton") {
         name = result[1];
         intensity = stoi(result[2]);
         duration = stoi(result[3]);
-        stim_list_[name] = new Exoskeleton(name, intensity, duration);
+        stim.reset();
+        stim = std::make_shared<Exoskeleton>(name, intensity, duration);
+        stim_list_.insert(std::pair<std::string, std::shared_ptr<Stimulation>>(name, stim));
+        //stim_list_[name] = new Exoskeleton(name, intensity, duration);
       }
     }
     f.close();
@@ -94,13 +102,20 @@ namespace ARAIG {
         temp_task = new Task;
         temp_task->setName(result[1]);
         
-      } else if (header == "Sim") {
-        //Detect Stimulation number and grab it from the vector
+      } else {
+        //Detect Stimulation name and grab it from the map
         key = result[0];
-        if (temp_task && stim_list_.find(key) != stim_list_.end()){
-            *temp_task += stim_list_[key];
-        }else{
-            errors.push_back (std::string("Error: No task instantiated to accept the Stimulation. Skipping " + key + ".\n"));
+        
+        if (key != " "){
+          if (temp_task){
+            if (stim_list_.find(key) != stim_list_.end()){
+              *temp_task += stim_list_[key];
+            }else{
+              errors.push_back (std::string("Error: Stimulation: " + key + " not found.\n"));
+            }
+          }else{
+              errors.push_back (std::string("Error: No task instantiated to accept the Stimulation.\n"));
+          }
         }
       }
     }

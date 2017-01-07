@@ -16,6 +16,7 @@
 
 namespace ARAIG{
   extern const float version;
+  enum menuOption {NONE = 0, MENU, FLIGHT_PLAN};
 class Profile{
   class Student{
     std::string FName_,
@@ -64,7 +65,7 @@ public:
   void execute (unsigned long tasks);
   void load_menu();
   long show_menu()const;
-  long getInput(std::string prompt, int min, long max, bool menuPrompt = false);
+  long getInput(std::string prompt, int min, long max, menuOption option = NONE);
   //Display all tasks to the screen
   std::ostream& display_todo_tasks (std::ostream& os) const;
   //Display completed tasks to the screen

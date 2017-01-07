@@ -42,7 +42,7 @@ namespace ARAIG{
   Task& Task::operator=(const Task& src){
     if (&src != this){
       name_ = src.name_;
-      for (Stimulation* element : src.task_list_){
+      for (std::shared_ptr<Stimulation> element : src.task_list_){
         task_list_.push_back(element);
       }
     }
@@ -61,13 +61,13 @@ namespace ARAIG{
     return std::move(*this);
   }
   
-  void Task::operator+=(Stimulation* ptr){
+  void Task::operator+=(std::shared_ptr<Stimulation> ptr){
     task_list_.push_back(ptr);
     task_num_++;
   }
   
-  Stimulation* Task::operator[](unsigned int i)const{
-    //Go to the specific index and return  Stimulation*
+  std::shared_ptr<Stimulation> Task::operator[](unsigned int i)const{
+    //Go to the specific index and return std::shared_ptr<Stimulation>
     auto it = task_list_.begin();
     if (i < task_list_.size()){
       std::advance(it, i);
@@ -115,7 +115,7 @@ namespace ARAIG{
   
   std::ostream& Task::execute(std::ostream& os)const{
     //Print details of all stimulations inside a task. Will require iterator
-    for (Stimulation* element : task_list_){ element->display(os) << '\n'; }
+    for (std::shared_ptr<Stimulation> element : task_list_){ element->display(os) << '\n'; }
     return os;
   }
 }

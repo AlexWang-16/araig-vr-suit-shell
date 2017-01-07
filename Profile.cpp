@@ -141,6 +141,7 @@ namespace ARAIG{
     }
     
     //variables
+    //NOTE: I want to upgrade these to shared_ptrs
     std::string key;
     std::vector<std::string>result, errors;
     Student* tempStudent;
@@ -261,7 +262,7 @@ namespace ARAIG{
     
     unsigned long user_input = 0;
     do {
-      user_input = getInput("Please enter menu item number: ", 1, menu_.size(), true);
+      user_input = getInput("Please enter menu item number: ", 1, menu_.size(), MENU);
       switch (user_input){
         case 1:
           //Execute tasks
@@ -269,7 +270,7 @@ namespace ARAIG{
           if (ToRun_.size() > 0){
             new_line(user_interface_skip_screen);
             std::cout << "\nYou currently have " << ToRun_.size() << " tasks to execute.\n";
-            long numOfTasks = getInput("Please enter number of tasks to execute: ", 0, ToRun_.size());
+            long numOfTasks = getInput("Please enter number of tasks to execute: ", 0, ToRun_.size(), FLIGHT_PLAN);
             execute(numOfTasks);
             if (numOfTasks == 1){
               new_line(user_interface_skip_screen);
@@ -363,7 +364,7 @@ namespace ARAIG{
     return options;
   }
   
-  long Profile::getInput(std::string prompt, int min, long max, bool menuPrompt){
+  long Profile::getInput(std::string prompt, int min, long max, menuOption option){
     //Return sanitized user input for menu
     
     unsigned long user_input = 0, exitCode = 0;
@@ -371,7 +372,7 @@ namespace ARAIG{
     std::string err = "Error: Invalid input. Please check input and try again.";
     
     do {
-      if (menuPrompt){
+      if (option == MENU){
         max = show_menu();
         exitCode = menu_.size();
       }
@@ -387,7 +388,10 @@ namespace ARAIG{
         bad = false;
       }else if (static_cast<int>(user_input) < min || static_cast<int>(user_input) > max){
         new_line(user_interface_skip_screen);
-        std::cerr << err;
+        std::cerr << err << '\n';
+        if (option == FLIGHT_PLAN){
+          std::cerr << "You currently have " << ToRun_.size() << " tasks to execute.";
+        }
         new_line(user_interface_system_message_skip_line);
       }else{
         bad = false;
