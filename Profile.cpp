@@ -144,7 +144,7 @@ namespace ARAIG{
     //NOTE: I want to upgrade these to shared_ptrs
     std::string key;
     std::vector<std::string>result, errors;
-    Student* tempStudent;
+    std::unique_ptr<Student> tempStudent;
     Instructor* tempInstructor;
     //Get student data
     skip_blank_lines(f, result);
@@ -153,7 +153,8 @@ namespace ARAIG{
       if (result.size() != 3){
         throw Exceptions ("Error: File data corruption. Incorrect instructor or student data format.", 4);
       }
-      tempStudent = new Student (result[0], result[1], result[2]);
+      tempStudent.reset(new Student (result[0], result[1], result[2]));
+      //tempStudent = new Student (result[0], result[1], result[2]);
     }catch (Exceptions& e){
       std::cerr << e.what() << '\n';
       new_line(user_interface_system_message_skip_line / 2);
@@ -227,8 +228,6 @@ namespace ARAIG{
       }
     }
     
-    delete tempStudent;
-    tempStudent = nullptr;
     delete tempInstructor;
     tempInstructor = nullptr;
     
