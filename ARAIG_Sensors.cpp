@@ -9,7 +9,7 @@
 //  Copyright © 2016 Alex Wang. All rights reserved.
 //
 
-#include "ARAIG_sensors.h"
+#include "ARAIG_Sensors.h"
 #include "Exoskeleton.h"
 #include "Stims.h"
 #include "Task.h"
@@ -40,7 +40,7 @@ namespace ARAIG {
     int intensity, frequency, duration;
     std::vector<std::string> result, errors;
     std::shared_ptr<Stimulation> stim;
-    Task* temp_task = nullptr;
+    std::shared_ptr<Task> temp_task;
   
     while (!f.fail()){
       //Reading stimulation configuration
@@ -99,7 +99,7 @@ namespace ARAIG {
         }
         
         //Start a fresh task and give it a name
-        temp_task = new Task;
+        temp_task.reset(new Task);
         temp_task->setName(result[1]);
         
       } else {
@@ -120,8 +120,7 @@ namespace ARAIG {
       }
     }
   //Final push and house cleaning
-    if (temp_task){task_list_[temp_task->getName()] = temp_task;}
-  temp_task = nullptr;
+    if (temp_task){task_list_.insert (std::pair <std::string, std::shared_ptr<Task>> (temp_task->getName(), std::move(temp_task)));}
   
   if (errors.size()){
     //If errors existed while adding stimulations, print them out
@@ -142,7 +141,7 @@ namespace ARAIG {
   
   Task& ARAIG_sensors::getTask(std::string key){
     
-    std::map<std::string, Task*>::iterator it = task_list_.find(key);
+    std::map<std::string, std::shared_ptr<Task>>::iterator it = task_list_.find(key);
     if (taskExists(key)){
       return *it->second;
     }
@@ -151,14 +150,14 @@ namespace ARAIG {
   
   bool ARAIG_sensors::taskExists(std::string key){
     //return true if tasks exists
-    std::map<std::string, Task*>::iterator i = task_list_.find(key);
+    std::map<std::string, std::shared_ptr<Task>>::iterator i = task_list_.find(key);
     return (i != task_list_.end());
   }
   
   std::ostream& ARAIG_sensors::dump (std::ostream& os) {
     //Iterate through the entire list and run dump and execute()
 
-    std::for_each(task_list_.begin(), task_list_.end(), [&](std::pair<const std::string, Task*> i){
+    std::for_each(task_list_.begin(), task_list_.end(), [&](std::pair<const std::string, std::shared_ptr<Task>> i){
       if (i.second){
         i.second -> dump(os);
         os << '\n';

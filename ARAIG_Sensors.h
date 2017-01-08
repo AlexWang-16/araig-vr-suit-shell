@@ -17,7 +17,7 @@
 namespace ARAIG {
   class ARAIG_sensors{
     std::map<std::string, std::shared_ptr<Stimulation>> stim_list_;
-    std::map<std::string, Task*> task_list_;
+    std::map<std::string, std::shared_ptr<Task>> task_list_;
     Task dummy;
   public:
     ARAIG_sensors (const char* stims_filename, const char* tasks_filename);
