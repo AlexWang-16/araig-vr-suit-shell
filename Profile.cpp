@@ -11,7 +11,6 @@
 
 #include "Global.h"
 #include "Profile.h"
-#include "ARAIG_sensors.h"
 namespace ARAIG{
   Profile::Student::Student(std::string FName, std::string LName,
                             std::string studentNumber):FName_(FName),
@@ -222,7 +221,7 @@ namespace ARAIG{
         //I've read in a proper task
         key = result[0];
         if (as.taskExists(key)){
-          ToRun_.push_back(new Task (as.getTask(key)));
+          ToRun_.push_back(std::unique_ptr<Task>(new Task (as.getTask(key))));
         }
       }
     }
@@ -324,7 +323,7 @@ namespace ARAIG{
         of_ << ToRun_[0]->getName() << '\n';
         ToRun_[0]->execute(of_);
         of_ << '\n';
-          Completed_.push_back(new Task(std::move(*ToRun_[0])));
+        Completed_.push_back(std::unique_ptr<Task>(new Task(std::move(*ToRun_[0]))));
           ToRun_.erase(ToRun_.begin());
       }
     }else if (tasks == 0){
@@ -405,8 +404,8 @@ namespace ARAIG{
       new_line(user_interface_skip_screen);
       std::cout << "\nTasks to be completed\n";
       print_dash(29);
-      for_each(ToRun_.begin(), ToRun_.end(), [&](Task* e){
-        if (e != nullptr){
+      for_each(ToRun_.cbegin(), ToRun_.cend(), [&os](const std::unique_ptr<Task>& e){
+        if (e){//Checking if the unique_ptr is empty, doing this will invoke get() which returns false if empty
           os << e->getName() <<'\n';
         }
       });
@@ -426,8 +425,8 @@ namespace ARAIG{
       std::cout << "Completed Tasks\n";
       print_dash(23);
       
-      for_each(Completed_.begin(), Completed_.end(), [&](Task* e) {
-        if (e != nullptr){
+      for_each(Completed_.cbegin(), Completed_.cend(), [&](const std::unique_ptr<Task>& e) {
+        if (e){ //Checking if the unique_ptr is empty, doing this will invoke get() which returns false if empty
           os << e->getName() << '\n';
         }
       });

@@ -27,7 +27,6 @@ namespace ARAIG{
     virtual ~Task();
     Task& operator=(const Task& src);
     Task&& operator=(Task&& src);
-    void copy(std::string name, std::list<Stimulation*>task_list);
     void operator+=(std::shared_ptr<Stimulation> ptr);
     std::shared_ptr<Stimulation> operator[] (unsigned int i)const;
     long getSize()const;

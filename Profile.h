@@ -12,7 +12,7 @@
 #ifndef Profile_H
 #define Profile_H
 
-#include "ARAIG_sensors.h"
+#include "ARAIG_Sensors.h"
 
 namespace ARAIG{
   extern const float version;
@@ -52,8 +52,8 @@ class Profile{
     void writeToFile(std::ofstream& of);
   };
   
-  std::vector<Task*>ToRun_;
-  std::vector<Task*>Completed_;
+  std::vector<std::unique_ptr<Task>>ToRun_;
+  std::vector<std::unique_ptr<Task>>Completed_;
   std::vector<std::string>menu_;
   //Ownership of ofstream object
   std::ofstream& of_;

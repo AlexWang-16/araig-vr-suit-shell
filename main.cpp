@@ -11,7 +11,7 @@
 #include "Stims.h"
 #include "Exoskeleton.h"
 #include "Task.h"
-#include "ARAIG_sensors.h"
+#include "ARAIG_Sensors.h"
 #include "Profile.h"
 using namespace ARAIG;
 extern const int max_duration, max_intensity;
