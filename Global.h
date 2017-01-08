@@ -27,7 +27,7 @@
 
 namespace ARAIG {
 //Version tracking (Profile.cpp)
-const float version = 0.97;
+const float version = 0.98;
 
 //Stimulation Configurations (Stimulations.h)
 const int duration_max = 300;

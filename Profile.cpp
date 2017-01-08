@@ -141,11 +141,10 @@ namespace ARAIG{
     }
     
     //variables
-    //NOTE: I want to upgrade these to shared_ptrs
     std::string key;
     std::vector<std::string>result, errors;
     std::unique_ptr<Student> tempStudent;
-    Instructor* tempInstructor;
+    std::unique_ptr<Instructor> tempInstructor;
     //Get student data
     skip_blank_lines(f, result);
     
@@ -179,7 +178,7 @@ namespace ARAIG{
     }
     
     try{
-      tempInstructor = new Instructor (result[0], result[1], result[2]);
+      tempInstructor.reset(new Instructor (result[0], result[1], result[2]));
     }catch (Exceptions& e){
       std::cerr << e.what();
       new_line(user_interface_system_message_skip_line / 2);
@@ -227,9 +226,6 @@ namespace ARAIG{
         }
       }
     }
-    
-    delete tempInstructor;
-    tempInstructor = nullptr;
     
     f.close();
     if (errors.size() > 0){
@@ -381,6 +377,9 @@ namespace ARAIG{
       if (std::cin.fail()){
         new_line(user_interface_skip_screen);
         std::cerr << err;
+        if (option == FLIGHT_PLAN){
+          std::cerr << "\nYou currently have " << ToRun_.size() << " tasks remaining.";
+        }
         new_line(user_interface_system_message_skip_line);
         std::cin.clear();
       }else if (user_input == exitCode){
@@ -389,7 +388,7 @@ namespace ARAIG{
         new_line(user_interface_skip_screen);
         std::cerr << err << '\n';
         if (option == FLIGHT_PLAN){
-          std::cerr << "You currently have " << ToRun_.size() << " tasks to execute.";
+          std::cerr << "You currently have " << ToRun_.size() << " tasks remaining.";
         }
         new_line(user_interface_system_message_skip_line);
       }else{
