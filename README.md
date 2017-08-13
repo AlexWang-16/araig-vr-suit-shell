@@ -17,3 +17,12 @@ Sample command for step 4:
 `./araig StimulationConfig.csv TaskConfiguration.csv SampleProfileConfiguration.csv Output.txt`
 
 Output.txt is where all the data written will be exported.
+
+Note: If errors were encountered, consult with err_codes.txt for possible solutions.
+
+## Screenshots
+
+![alt text](screenshots/1.png "Main Menu")
+![alt text](screenshots/3.png "Tasks to be completed")
+![alt text](screenshots/5.png "Task executed")
+![alt text](screenshot/6.png "Show task completed")
