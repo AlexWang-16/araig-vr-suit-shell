@@ -8,7 +8,12 @@ Warning: the following instructions assume you are running a bash shell like ter
 
 1. Download package and unzip if necessary
 2. Open terminal and navigate to directory
-3. Enter "make" command in terrminal
-4. Enter "./araig" in terminal to launch the app
+3. Enter `make` command in terrminal
+4. Enter `./araig (Stimulaton Configuration file) (Task Configuration file) (Profile Configuration) (output file)` in terminal to launch the app.
 
+Names of the actual file should be used to substitue where ( ) are used.
 
+Sample command for step 4:
+`./araig StimulationConfig.csv TaskConfiguration.csv SampleProfileConfiguration.csv Output.txt`
+
+Output.txt is where all the data written will be exported.
