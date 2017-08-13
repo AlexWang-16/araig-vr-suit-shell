@@ -20,9 +20,11 @@ Output.txt is where all the data written will be exported.
 
 Note: If errors were encountered, consult with err_codes.txt for possible solutions.
 
-## Screenshot
-![alt text](screenshots/1.png "Main Menu") 
+## Screenshots
+![alt text](screenshots/1.png "Main Menu")
 
-![alt text](screenshots/3.png "Tasks to be completed") 
-![alt text](screenshots/5.png "Task executed") 
+![alt text](screenshots/3.png "Tasks to be completed")
+![alt text](screenshots/5.png "Task executed")
 ![alt text](screenshots/6.png "Show task completed")
+
+For more detailed screenshots, please click into the _screenshots_ folder
