@@ -22,7 +22,7 @@ Note: If errors were encountered, consult with err_codes.txt for possible soluti
 
 ## Screenshots
 
-![alt text](screenshots/1.png "Main Menu")
-![alt text](screenshots/3.png "Tasks to be completed")
-![alt text](screenshots/5.png "Task executed")
-![alt text](screenshot/6.png "Show task completed")
+![alt text](screenshots/1.png "Main Menu") 
+![alt text](screenshots/3.png "Tasks to be completed") 
+![alt text](screenshots/5.png "Task executed") 
+![alt text](screenshots/6.png "Show task completed")
