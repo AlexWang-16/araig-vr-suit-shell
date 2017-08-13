@@ -1,5 +1,14 @@
 # As Real As It Gets Virtual Reality Suit Shell
 
-This is a private project and therefore is fully copyright protected. The purpose of this repository is for backing up code that is being written for my own personal purposes only.
+The software was developed as a shel software for Seneca College's school of aviation flight simulation examination software.
 
-No part of this document or its source code in this repository shall be copied or distributed in any format. It is proprietary software written for Seneca College School of aviation's deployment of As Real As It Gets (ARAIG) reality gaming suit.
+## Instructions
+
+Warning: the following instructions assume you are running a bash shell like terminal with clang++ compiler installed. For windows users please use _cygwin_ to gain similar functionality.
+
+1. Download package and unzip if necessary
+2. Open terminal and navigate to directory
+3. Enter "make" command in terrminal
+4. Enter "./araig" in terminal to launch the app
+
+
