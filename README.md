@@ -27,4 +27,4 @@ Note: If errors were encountered, consult with err_codes.txt for possible soluti
 ![alt text](screenshots/5.png "Task executed")
 ![alt text](screenshots/6.png "Show task completed")
 
-For more detailed screenshots, please click into the _screenshots_ folder
+For more detailed screenshots, please visit the [_screenshots_ folder](https://github.com/AlexWang-16/araig-vr-suit-shell/tree/master/screenshots)
